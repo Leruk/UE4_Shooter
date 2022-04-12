@@ -22,6 +22,9 @@ void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();	
 
+	checkf(DefaultAmmo.Bullets > 0, TEXT("Warning: Bullets can't be negative"));
+	checkf(DefaultAmmo.Clips > 0, TEXT("Warning: Clips can't be negative"));
+
 	CurrentAmmo = DefaultAmmo;
 	
 }

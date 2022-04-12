@@ -4,10 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "CoreTypes.h"
 #include "BaseCharacter.generated.h"
-
-DECLARE_MULTICAST_DELEGATE(FOnDeath);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnChangedHealth, float);
 
 class USpringArmComponent;
 class UCameraComponent;

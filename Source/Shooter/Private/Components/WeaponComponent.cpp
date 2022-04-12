@@ -109,11 +109,20 @@ void UWeaponComponent::AnimInit() {
 	if (EquipNotify) {
 		EquipNotify->OnNotify.AddUObject(this, &UWeaponComponent::EquipFinished);
 	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("EquipNotify Not Found"));
+		checkNoEntry();
+	}
 
 
 	for (auto OneDataWeapon : WeaponData) {
 		const auto ReloadNotify = AnimUtilities::FindNotifyByClass<UReloadAnimNotify>(OneDataWeapon.ReloadWeaponAnim);
-		if (!ReloadNotify) continue;
+
+		if (!ReloadNotify) {
+			UE_LOG(LogTemp, Warning, TEXT("ReloadNotify Not Found"));
+			checkNoEntry();
+		}
+
 		ReloadNotify->OnNotify.AddUObject(this, &UWeaponComponent::ReloadFinished);
 	}
 }
