@@ -22,5 +22,10 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	bool GetWeaponUIData(FWeaponUIData &UIData) const;
-	
+
+	UFUNCTION(BlueprintCallable)
+	FString GetAmmoData() const;
+
+private:
+	FString PrintAmmo(FAmmoData& AmmoData) const;
 };

@@ -193,3 +193,12 @@ bool UWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
 	}
 		return false;
 }
+
+bool UWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
+{
+	if (CurrentWeapon) {
+		AmmoData = CurrentWeapon->GetWeaponAmmo();
+		return true;
+	}
+	return false;
+}

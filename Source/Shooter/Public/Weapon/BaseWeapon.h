@@ -29,6 +29,9 @@ public:
 
 	FWeaponUIData GetWeaponUIData() const { return UIData; }
 
+	FAmmoData GetWeaponAmmo() const { return CurrentAmmo; }
+
+
 protected:
 	
 	virtual void BeginPlay() override;

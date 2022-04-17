@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "UI/PlayerHUDWidget.h"
@@ -31,4 +31,27 @@ bool UPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const {
 	if (!WeaponComponent) return false;
 
 	return WeaponComponent->GetWeaponUIData(UIData);
+}
+
+FString UPlayerHUDWidget::GetAmmoData() const {
+
+	const auto Player = GetOwningPlayerPawn();
+	if (!Player) return "";
+
+	const auto Component = Player->GetComponentByClass(UWeaponComponent::StaticClass());
+	const auto WeaponComponent = Cast<UWeaponComponent>(Component);
+
+	if (!WeaponComponent) return "";
+
+	FAmmoData CurrentWeapon;
+	WeaponComponent->GetWeaponAmmoData(CurrentWeapon);
+
+	return PrintAmmo(CurrentWeapon);
+} 
+
+FString UPlayerHUDWidget::PrintAmmo(FAmmoData& AmmoData) const {
+	FString StringAmmo;
+	StringAmmo = FString::FromInt(AmmoData.Bullets) + " / ";
+	StringAmmo += AmmoData.Infinite ? TEXT("∞") : FString::FromInt(AmmoData.Clips);
+	return StringAmmo;
 }
