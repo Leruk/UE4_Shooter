@@ -9,6 +9,7 @@
 #include "Components/BaseCharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WeaponComponent.h"
+#include "GameFramework/Controller.h"
 
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit) 
 	: Super(ObjInit.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -103,7 +104,9 @@ void ABaseCharacter::OnDeath() {
 
 	SetLifeSpan(5.0f);
 
-	Controller->ChangeState(NAME_Spectating);
+	if (Controller) {
+		Controller->ChangeState(NAME_Spectating);
+	}
 
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }

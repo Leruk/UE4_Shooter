@@ -23,6 +23,8 @@ public:
 
 	float GetHealthPercent() const { return Health / MaxHealth; }
 
+	bool IsDead() const { return Health <= 0.0f; }
+
 	UFUNCTION()
 	void OnTakeAnyDamage(
 		AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
@@ -44,8 +46,6 @@ protected:
 private:
 
 	FTimerHandle TimerHandle;
-
-	bool IsDead() const { return Health <= 0.0f; }
 
 	void AutoHeal();
 
