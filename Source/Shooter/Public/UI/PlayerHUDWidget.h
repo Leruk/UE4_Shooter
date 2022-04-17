@@ -36,8 +36,5 @@ protected:
 
 private:
 
-	UHealthComponent* GetHealthComponent() const;
-	UWeaponComponent* GetWeaponComponent() const;
-
 	FString PrintAmmo(FAmmoData& AmmoData) const;
 };

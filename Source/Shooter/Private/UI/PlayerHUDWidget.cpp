@@ -5,10 +5,11 @@
 #include "GameFramework/Character.h"
 #include "Components/HealthComponent.h"
 #include "Components/WeaponComponent.h"
+#include "ShootUtils.h"
 
 float UPlayerHUDWidget::GetHealthPercent() const {
 
-	const auto HealthComponent = GetHealthComponent();
+	const auto HealthComponent = Utils::GetPlayerComponent<UHealthComponent>(GetOwningPlayerPawn());
 
 	if (!HealthComponent) return 0.0f;
 
@@ -18,7 +19,7 @@ float UPlayerHUDWidget::GetHealthPercent() const {
 
 bool UPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const {
 
-	const auto WeaponComponent = GetWeaponComponent();
+	const auto WeaponComponent = Utils::GetPlayerComponent<UWeaponComponent>(GetOwningPlayerPawn());
 
 	if (!WeaponComponent) return false;
 
@@ -27,7 +28,7 @@ bool UPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const {
 
 FString UPlayerHUDWidget::GetAmmoData() const {
 
-	const auto WeaponComponent = GetWeaponComponent();
+	const auto WeaponComponent = Utils::GetPlayerComponent<UWeaponComponent>(GetOwningPlayerPawn());
 
 	if (!WeaponComponent) return "";
 
@@ -39,7 +40,7 @@ FString UPlayerHUDWidget::GetAmmoData() const {
 
 bool UPlayerHUDWidget::IsPlayerAlive() const
 {
-	const auto HealthComponent = GetHealthComponent();
+	const auto HealthComponent = Utils::GetPlayerComponent<UHealthComponent>(GetOwningPlayerPawn());
 
 	return HealthComponent && !HealthComponent->IsDead();
 }
@@ -49,32 +50,6 @@ bool UPlayerHUDWidget::IsPlayerSpectating() const
 	const auto Controller = GetOwningPlayer();
 
 	return Controller && Controller->GetStateName() == NAME_Spectating;
-}
-
-UHealthComponent* UPlayerHUDWidget::GetHealthComponent() const
-{
-	const auto Player = GetOwningPlayerPawn();
-	if (!Player) return nullptr;
-
-	const auto Component = Player->GetComponentByClass(UHealthComponent::StaticClass());
-	const auto HealthComponent = Cast<UHealthComponent>(Component);
-
-	if (!HealthComponent) return nullptr;
-
-	return HealthComponent;
-}
-
-UWeaponComponent* UPlayerHUDWidget::GetWeaponComponent() const
-{
-	const auto Player = GetOwningPlayerPawn();
-	if (!Player) return nullptr;
-
-	const auto Component = Player->GetComponentByClass(UWeaponComponent::StaticClass());
-	const auto WeaponComponent = Cast<UWeaponComponent>(Component);
-
-	if (!WeaponComponent) return nullptr;
-
-	return WeaponComponent;
 }
 
 FString UPlayerHUDWidget::PrintAmmo(FAmmoData& AmmoData) const {
