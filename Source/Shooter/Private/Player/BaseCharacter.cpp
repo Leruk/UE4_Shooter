@@ -102,7 +102,7 @@ void ABaseCharacter::OnDeath() {
 
 	GetCharacterMovement()->DisableMovement();
 
-	SetLifeSpan(5.0f);
+	SetLifeSpan(3.0f);
 
 	if (Controller) {
 		Controller->ChangeState(NAME_Spectating);

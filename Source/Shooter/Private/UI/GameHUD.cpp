@@ -4,8 +4,9 @@
 #include "UI/GameHUD.h"
 #include "Blueprint/UserWidget.h"
 
-void AGameHUD::DrawHUD() {
-	
+void AGameHUD::BeginPlay() {
+	Super::BeginPlay();
+
 	const auto PlayerWidget = CreateWidget(GetWorld(), PlayerWidgetClass);
 	PlayerWidget->AddToViewport();
 	
