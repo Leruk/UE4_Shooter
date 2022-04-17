@@ -4,6 +4,7 @@
 #include "UI/PlayerHUDWidget.h"
 #include "GameFramework/Character.h"
 #include "Components/HealthComponent.h"
+#include "Components/WeaponComponent.h"
 
 float UPlayerHUDWidget::GetHealthPercent() const {
 
@@ -17,4 +18,17 @@ float UPlayerHUDWidget::GetHealthPercent() const {
 
 	return HealthComponent->GetHealthPercent();
 
+}
+
+bool UPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const {
+
+	const auto Player = GetOwningPlayerPawn();
+	if (!Player) return false;
+
+	const auto Component = Player->GetComponentByClass(UWeaponComponent::StaticClass());
+	const auto WeaponComponent = Cast<UWeaponComponent>(Component);
+
+	if (!WeaponComponent) return false;
+
+	return WeaponComponent->GetWeaponUIData(UIData);
 }

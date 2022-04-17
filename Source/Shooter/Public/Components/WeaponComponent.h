@@ -4,25 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "CoreTypes.h"
+#include "ShootCoreTypes.h"
 #include "WeaponComponent.generated.h"
 
 class ABaseWeapon;
 class USkeletalMeshComponent;
-
-USTRUCT(BlueprintType)
-struct FWeaponData
-{
-	GENERATED_USTRUCT_BODY()
-
-		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-		TSubclassOf<ABaseWeapon> WeaponClass;
-
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-		UAnimMontage* ReloadWeaponAnim;
-
-};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTER_API UWeaponComponent : public UActorComponent
@@ -42,6 +28,8 @@ public:
 
 	void ChangeClip();
 	void OnClipEmpty();
+
+	bool GetWeaponUIData(FWeaponUIData& UIData) const;
 
 protected:
 

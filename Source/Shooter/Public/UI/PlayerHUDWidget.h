@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "ShootCoreTypes.h"
 #include "PlayerHUDWidget.generated.h"
 
 /**
@@ -18,5 +19,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() const;
+
+	UFUNCTION(BlueprintCallable)
+	bool GetWeaponUIData(FWeaponUIData &UIData) const;
 	
 };

@@ -4,24 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "ShootCoreTypes.h"
 #include "HealthComponent.generated.h"
 
 class ABaseCharacter;
 
-USTRUCT(BlueprintType)
-struct FAutoHeal {
-
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditDefaultsOnly, Category = "AutoHeal")
-	float Heal = 1.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "AutoHeal")
-	float TimeRate = 0.5f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "AutoHeal")
-	float FirstDelay = 5.0f;
-};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTER_API UHealthComponent : public UActorComponent

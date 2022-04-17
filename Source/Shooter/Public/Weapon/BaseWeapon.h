@@ -4,28 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "CoreTypes.h"
+#include "ShootCoreTypes.h"
 #include "BaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
-
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature);
-
-USTRUCT(BlueprintType)
-struct FAmmoData
-{
-	GENERATED_USTRUCT_BODY()
-
-		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
-		int32 Bullets;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo", meta = (EditCondition = "!Infinite"))
-		int32 Clips;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
-		bool Infinite;
-
-};
 
 UCLASS()
 class SHOOTER_API ABaseWeapon : public AActor
@@ -45,6 +27,8 @@ public:
 
 	FOnClipEmptySignature OnClipEmpty;
 
+	FWeaponUIData GetWeaponUIData() const { return UIData; }
+
 protected:
 	
 	virtual void BeginPlay() override;
@@ -57,6 +41,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FAmmoData DefaultAmmo{30, 3, false};
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FWeaponUIData UIData;
 
 	virtual void MakeShot();
 	
@@ -80,4 +67,5 @@ protected:
 private:
 	
 	FAmmoData CurrentAmmo;
+
 };

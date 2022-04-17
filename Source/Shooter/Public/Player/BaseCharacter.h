@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "CoreTypes.h"
+#include "ShootCoreTypes.h"
 #include "BaseCharacter.generated.h"
 
 class USpringArmComponent;
@@ -12,9 +12,6 @@ class UCameraComponent;
 class UHealthComponent;
 class UTextRenderComponent;
 class UWeaponComponent;
-
-DECLARE_MULTICAST_DELEGATE(FOnDeath);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnChangedHealth, float);
 
 UCLASS()
 class SHOOTER_API ABaseCharacter : public ACharacter

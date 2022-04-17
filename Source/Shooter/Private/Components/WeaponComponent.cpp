@@ -184,3 +184,12 @@ void UWeaponComponent::ChangeClip()
 
 	Character->PlayAnimMontage(CurrentReloadAnim);
 }
+
+bool UWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
+{
+	if (CurrentWeapon) {
+		UIData = CurrentWeapon->GetWeaponUIData();
+		return true;
+	}
+		return false;
+}
