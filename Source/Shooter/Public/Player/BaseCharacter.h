@@ -13,6 +13,9 @@ class UHealthComponent;
 class UTextRenderComponent;
 class UWeaponComponent;
 
+DECLARE_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnChangedHealth, float);
+
 UCLASS()
 class SHOOTER_API ABaseCharacter : public ACharacter
 {

@@ -10,6 +10,19 @@
 class ABaseWeapon;
 class USkeletalMeshComponent;
 
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+		TSubclassOf<ABaseWeapon> WeaponClass;
+
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+		UAnimMontage* ReloadWeaponAnim;
+
+};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTER_API UWeaponComponent : public UActorComponent

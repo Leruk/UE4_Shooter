@@ -9,6 +9,24 @@
 
 class USkeletalMeshComponent;
 
+DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature);
+
+USTRUCT(BlueprintType)
+struct FAmmoData
+{
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+		int32 Bullets;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo", meta = (EditCondition = "!Infinite"))
+		int32 Clips;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+		bool Infinite;
+
+};
+
 UCLASS()
 class SHOOTER_API ABaseWeapon : public AActor
 {
