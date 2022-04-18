@@ -6,6 +6,7 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/WeaponFXComponent.h"
 
 AProjectile::AProjectile()
 {
@@ -23,6 +24,8 @@ AProjectile::AProjectile()
 
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>("ProjectileMesh");
 	ProjectileMesh->SetupAttachment(CollisionComponent);
+
+	WeaponFXComponent = CreateDefaultSubobject<UWeaponFXComponent>("WeaponFXComponent");
 }
 
 void AProjectile::BeginPlay()
@@ -57,6 +60,8 @@ void AProjectile::OnProjectileHit(
 		DoFullDamage);
 
 	DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
+	WeaponFXComponent->PlayImpactFX(Hit);
+
 
 	Destroy();
 }

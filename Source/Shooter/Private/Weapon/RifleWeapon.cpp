@@ -5,6 +5,11 @@
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
+#include "Components/WeaponFXComponent.h"
+
+ARifleWeapon::ARifleWeapon() {
+	WeaponFXComponent = CreateDefaultSubobject<UWeaponFXComponent>("WeaponFXComponent");
+}
 
 void ARifleWeapon::StartFire() {
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ARifleWeapon::MakeShot, 0.1f, true);
@@ -41,8 +46,10 @@ void ARifleWeapon::MakeShot() {
 	float BetweenAngle = AngleBetweenVectors(GetMuzzleTransform().GetRotation().GetForwardVector(), HitDirectionMuzzle);
 
 	if (HitResult.bBlockingHit && BetweenAngle <= 90) {
-		DrawDebugLine(GetWorld(), GetMuzzleTransform().GetLocation(), HitResult.ImpactPoint, FColor::Red, 0, 3.0f, false, 3.0f);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Blue, false, 5.0f);
+		/*DrawDebugLine(GetWorld(), GetMuzzleTransform().GetLocation(), HitResult.ImpactPoint, FColor::Red, 0, 3.0f, false, 3.0f);
+		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Blue, false, 5.0f);*/
+
+		WeaponFXComponent->PlayImpactFX(HitResult);
 
 		MakeDamage(HitResult);
 

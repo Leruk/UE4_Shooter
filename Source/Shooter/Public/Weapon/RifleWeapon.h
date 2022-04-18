@@ -6,9 +6,8 @@
 #include "Weapon/BaseWeapon.h"
 #include "RifleWeapon.generated.h"
 
-/**
- * 
- */
+class UWeaponFXComponent;
+
 UCLASS()
 class SHOOTER_API ARifleWeapon : public ABaseWeapon
 {
@@ -16,12 +15,17 @@ class SHOOTER_API ARifleWeapon : public ABaseWeapon
 	
 public:
 
+	ARifleWeapon();
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Fire")
 	float BulletSpread = 1.5f;
 
 	FTimerHandle TimerHandle;
+
+	UPROPERTY(VisibleAnywhere, Category = "VFX")
+	UWeaponFXComponent* WeaponFXComponent;
 
 	virtual void MakeShot() override;
 
