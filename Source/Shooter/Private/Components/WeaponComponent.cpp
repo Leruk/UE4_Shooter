@@ -30,7 +30,7 @@ void UWeaponComponent::SpawnWeapons() {
 	ACharacter* Player = Cast<ABaseCharacter>(GetOwner());
 
 	if (!Player || !GetWorld()) return;
-	
+
 	for (auto OneWeaponData : WeaponData)
 	{
 		auto Weapon = GetWorld()->SpawnActor<ABaseWeapon>(OneWeaponData.WeaponClass);
@@ -105,7 +105,7 @@ void UWeaponComponent::StopFire() {
 void UWeaponComponent::AnimInit() {
 
 	const auto EquipNotify = AnimUtilities::FindNotifyByClass<UEquipAnimNotify>(EquipFinishedAnim);
-	
+
 	if (EquipNotify) {
 		EquipNotify->OnNotify.AddUObject(this, &UWeaponComponent::EquipFinished);
 	}
@@ -168,9 +168,20 @@ void UWeaponComponent::Reload()
 	ChangeClip();
 }
 
-void UWeaponComponent::OnClipEmpty()
+void UWeaponComponent::OnClipEmpty(ABaseWeapon* AmmoEmptyWeapon)
 {
-	ChangeClip();
+	if (!AmmoEmptyWeapon) return;
+
+	if (CurrentWeapon == AmmoEmptyWeapon) {
+		ChangeClip();
+	}
+	else {
+		for (const auto Weapon : Weapons) {
+			if (Weapon == AmmoEmptyWeapon) {
+				Weapon->ChangeClip();
+			}
+		}
+	}
 }
 
 void UWeaponComponent::ChangeClip()
@@ -191,7 +202,7 @@ bool UWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
 		UIData = CurrentWeapon->GetWeaponUIData();
 		return true;
 	}
-		return false;
+	return false;
 }
 
 bool UWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
@@ -199,6 +210,16 @@ bool UWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
 	if (CurrentWeapon) {
 		AmmoData = CurrentWeapon->GetWeaponAmmo();
 		return true;
+	}
+	return false;
+}
+
+bool UWeaponComponent::TryToAddAmmo(TSubclassOf<ABaseWeapon> WeaponType, int32 ClipsAmount) {
+	for (const auto Weapon : Weapons) {
+
+		if (Weapon && Weapon->IsA(WeaponType)) {
+			return Weapon->TryToAddAmmo(ClipsAmount);
+		}
 	}
 	return false;
 }

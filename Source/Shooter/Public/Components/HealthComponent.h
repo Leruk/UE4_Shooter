@@ -29,6 +29,8 @@ public:
 	void OnTakeAnyDamage(
 		AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
+	bool TryToAddHealth(int32 HealthAmount);
+
 protected:
 
 	virtual void BeginPlay() override;

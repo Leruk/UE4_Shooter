@@ -22,6 +22,20 @@ protected:
 	USphereComponent* CollisionComponent;
 
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Pickup")
+	float RespawnTime = 5.0f;
+
+private:
+
+	float RotationYaw = 0.0f;
+
+	virtual bool GivePickupTo(APawn* PlayerPawn);
+
+	void PickupWasTaken();
+	void Respawn();
+	void GenerateRotationYaw();
 };

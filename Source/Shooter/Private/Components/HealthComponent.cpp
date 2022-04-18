@@ -25,7 +25,7 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 	
 	if (Damage <= 0.0f || IsDead()) return;
 
-	Health = FMath::Clamp(Health - Damage, 0.0f, 100.0f);
+	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
 
 	Player->OnChangedHealth.Broadcast(Health);
 
@@ -38,7 +38,17 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 }
 
 void UHealthComponent::AutoHeal() {
-	Health = FMath::Clamp(Health + AutoHealData.Heal, 0.0f, 100.0f);
+	Health = FMath::Clamp(Health + AutoHealData.Heal, 0.0f, MaxHealth);
 
 	Player->OnChangedHealth.Broadcast(Health);
+}
+
+bool UHealthComponent::TryToAddHealth(int32 HealthAmount) {
+	if (!Player || Health == MaxHealth || IsDead()) return false;
+
+	Health = FMath::Clamp(Health + HealthAmount, 0.0f, MaxHealth);
+
+	Player->OnChangedHealth.Broadcast(Health);
+
+	return true;
 }

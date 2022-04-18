@@ -8,7 +8,7 @@ class ABaseWeapon;
 
 //WEAPON
 
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ABaseWeapon*);
 
 USTRUCT(BlueprintType)
 struct FAmmoData

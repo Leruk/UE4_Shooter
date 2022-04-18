@@ -13,5 +13,14 @@ UCLASS()
 class SHOOTER_API AHealthPickup : public ABasePickup
 {
 	GENERATED_BODY()
-	
+public:
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo", meta = (ClampMin = "0.0", ClampMax = "250.0"))
+		int32 HealthAmount = 50.0f;
+
+	virtual bool GivePickupTo(APawn* PlayerPawn) override;
+
+private:
 };

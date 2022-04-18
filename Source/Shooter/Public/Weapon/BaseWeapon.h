@@ -31,6 +31,8 @@ public:
 
 	FAmmoData GetWeaponAmmo() const { return CurrentAmmo; }
 
+	bool TryToAddAmmo(int32 ClipsAmount);
+
 
 protected:
 	
@@ -66,6 +68,7 @@ protected:
 	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
 	void LogAmmo();
+	bool IsAmmoFull() const;
 
 private:
 	

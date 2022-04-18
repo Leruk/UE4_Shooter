@@ -6,7 +6,7 @@
 
 ABasePickup::ABasePickup()
 {
- 	PrimaryActorTick.bCanEverTick = false;
+ 	PrimaryActorTick.bCanEverTick = true;
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	CollisionComponent->InitSphereRadius(50.0f);
@@ -19,11 +19,49 @@ void ABasePickup::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	GenerateRotationYaw();
+}
+
+void ABasePickup::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	AddActorLocalRotation(FRotator(0, RotationYaw, 0));
 }
 
 void ABasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	Destroy();
+	APawn* PlayerPawn = Cast<APawn>(OtherActor);
+	if (GivePickupTo(PlayerPawn)) {
+		PickupWasTaken();
+	}
+}
+
+bool ABasePickup::GivePickupTo(APawn* PlayerPawn)
+{
+	return false;
+}
+
+void ABasePickup::PickupWasTaken() {
+
+	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	GetRootComponent()->SetVisibility(false, true);
+
+	FTimerHandle RespawnTimerHandle;
+	GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &ABasePickup::Respawn, RespawnTime);
+}
+
+void ABasePickup::Respawn()
+{
+	GenerateRotationYaw();
+	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	GetRootComponent()->SetVisibility(true, true);
+
+}
+
+void ABasePickup::GenerateRotationYaw() {
+	const auto Direction = FMath::RandBool() ? 1.0f : -1.0f;
+	RotationYaw = FMath::RandRange(1.5f, 2.0f) * Direction;
 }

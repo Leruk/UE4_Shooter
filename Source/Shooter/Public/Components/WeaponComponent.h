@@ -27,10 +27,12 @@ public:
 	void Reload();
 
 	void ChangeClip();
-	void OnClipEmpty();
+	void OnClipEmpty(ABaseWeapon* AmmoEmptyWeapon);
 
 	bool GetWeaponUIData(FWeaponUIData& UIData) const;
 	bool GetWeaponAmmoData(FAmmoData& AmmoData) const;
+
+	bool TryToAddAmmo(TSubclassOf<ABaseWeapon> WeaponType, int32 ClipsAmount);
 
 protected:
 
