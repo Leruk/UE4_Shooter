@@ -92,9 +92,10 @@ bool ABaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const {
 void ABaseWeapon::MakeHit(FHitResult& HitResult, FVector& TraceStart, FVector& TraceEnd)
 {
 	FCollisionQueryParams CollisionParam;
+	CollisionParam.bReturnPhysicalMaterial = true;
 	CollisionParam.AddIgnoredActor(GetOwner());
 
-	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility);
+	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParam);
 
 }
 
