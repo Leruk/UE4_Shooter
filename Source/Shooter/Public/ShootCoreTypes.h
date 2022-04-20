@@ -5,6 +5,7 @@
 #include "ShootCoreTypes.generated.h"
 
 class ABaseWeapon;
+class UNiagaraSystem;
 
 //WEAPON
 
@@ -72,4 +73,38 @@ struct FAutoHeal {
 
 	UPROPERTY(EditDefaultsOnly, Category = "AutoHeal")
 		float FirstDelay = 5.0f;
+};
+
+//VFX
+
+USTRUCT(BlueprintType)
+struct FDecalData {
+
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY(EditDefaultsOnly, Category = "VFX")
+		UMaterialInterface* Material;
+
+	UPROPERTY(EditDefaultsOnly, Category = "VFX")
+		FVector Size = FVector(10.0f);
+
+	UPROPERTY(EditDefaultsOnly, Category = "VFX")
+		float LifeTime = 5.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "VFX")
+		float FadeOutTime = 0.7f;
+};
+
+
+USTRUCT(BlueprintType)
+struct FImpactData {
+
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY(EditDefaultsOnly, Category = "VFX")
+		FDecalData DecalData;
+
+	UPROPERTY(EditDefaultsOnly, Category = "VFX")
+		UNiagaraSystem* Effect;
+
 };

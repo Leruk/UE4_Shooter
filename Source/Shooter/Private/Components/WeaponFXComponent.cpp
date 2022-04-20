@@ -4,6 +4,8 @@
 #include "Components/WeaponFXComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/DecalComponent.h"
 
 UWeaponFXComponent::UWeaponFXComponent()
 {
@@ -13,15 +15,26 @@ UWeaponFXComponent::UWeaponFXComponent()
 
 void UWeaponFXComponent::PlayImpactFX(const FHitResult& Hit)
 {
-	auto Effect = DefaultEffect;
+	auto ImpactData = DefaultImpactData;
 
 
 	if (Hit.PhysMaterial.IsValid()) {
 		const auto PhysMaterial = Hit.PhysMaterial.Get();
-		if (EffectMap.Contains(PhysMaterial)) {
-			Effect = EffectMap[PhysMaterial];
+		if (ImpactDataMap.Contains(PhysMaterial)) {
+			ImpactData = ImpactDataMap[PhysMaterial];
 		}
 	}
 
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Effect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactData.Effect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+
+	auto DecalComponent = UGameplayStatics::SpawnDecalAtLocation(GetWorld(),
+		ImpactData.DecalData.Material,
+		ImpactData.DecalData.Size,
+		Hit.ImpactPoint,
+		Hit.ImpactNormal.Rotation());
+
+	if (DecalComponent) {
+		DecalComponent->SetFadeOut(ImpactData.DecalData.LifeTime, ImpactData.DecalData.FadeOutTime);
+	}
 }
