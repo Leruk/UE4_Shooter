@@ -6,18 +6,22 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 #include "Components/WeaponFXComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 ARifleWeapon::ARifleWeapon() {
 	WeaponFXComponent = CreateDefaultSubobject<UWeaponFXComponent>("WeaponFXComponent");
 }
 
 void ARifleWeapon::StartFire() {
+	InitMuzzleFX();
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ARifleWeapon::MakeShot, 0.1f, true);
 	MakeShot();
 }
 
 void ARifleWeapon::StopFire() {
 	GetWorldTimerManager().ClearTimer(TimerHandle);
+	SetMuzzleFXVisibility(false);
 }
 
 void ARifleWeapon::MakeShot() {
@@ -86,4 +90,20 @@ void ARifleWeapon::MakeDamage(FHitResult HitResult) {
 
 	DamagedActor->TakeDamage(10.0f, FDamageEvent{}, GetCharacterController(), this);
 
+}
+
+void ARifleWeapon::InitMuzzleFX()
+{
+	if (!MuzzleFXComponent) {
+		MuzzleFXComponent = SpawnMuzzleFX();
+	}
+	SetMuzzleFXVisibility(true);
+}
+
+void ARifleWeapon::SetMuzzleFXVisibility(bool Visible)
+{
+	if (MuzzleFXComponent) {
+		MuzzleFXComponent->SetPaused(!Visible);
+		MuzzleFXComponent->SetVisibility(Visible, false);
+	}
 }

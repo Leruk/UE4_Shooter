@@ -23,9 +23,4 @@ protected:
 	virtual void StartFire() override;
 
 	virtual void MakeShot() override;
-
-private:
-
-
-	
 };

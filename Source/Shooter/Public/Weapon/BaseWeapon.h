@@ -8,6 +8,8 @@
 #include "BaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
+class UNiagaraSystem;
+class UNiagaraComponent;
 
 UCLASS()
 class SHOOTER_API ABaseWeapon : public AActor
@@ -22,8 +24,6 @@ public:
 
 	void ChangeClip();
 	bool CanReload() const;
-
-	virtual void Tick(float DeltaTime) override;
 
 	FOnClipEmptySignature OnClipEmpty;
 
@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FWeaponUIData UIData;
 
+	UPROPERTY(EditDefaultsOnly, Category = "VFX")
+	UNiagaraSystem* MuzzleFX;
+
 	virtual void MakeShot();
 	
 	virtual bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const;
@@ -64,11 +67,14 @@ protected:
 
 	float AngleBetweenVectors(FVector First, FVector Second);
 
+	UNiagaraComponent* SpawnMuzzleFX();
+
 	void DecreaseAmmo();
 	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
 	void LogAmmo();
 	bool IsAmmoFull() const;
+
 
 private:
 	

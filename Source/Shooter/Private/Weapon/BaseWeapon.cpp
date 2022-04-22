@@ -8,10 +8,12 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 ABaseWeapon::ABaseWeapon()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMeshComponent");
 	SetRootComponent(WeaponMesh);
@@ -26,12 +28,6 @@ void ABaseWeapon::BeginPlay()
 	checkf(DefaultAmmo.Clips > 0, TEXT("Warning: Clips can't be negative"));
 
 	CurrentAmmo = DefaultAmmo;
-
-}
-
-void ABaseWeapon::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
 }
 
@@ -177,4 +173,14 @@ bool ABaseWeapon::TryToAddAmmo(int32 ClipsAmount)
 	}
 
 	return true;
+}
+
+UNiagaraComponent* ABaseWeapon::SpawnMuzzleFX()
+{
+	return UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleFX,  //
+		WeaponMesh,                                                //
+		"MuzzleSocket",                                            //
+		FVector::ZeroVector,                                       //
+		FRotator::ZeroRotator,                                     //
+		EAttachLocation::SnapToTarget, true);
 }

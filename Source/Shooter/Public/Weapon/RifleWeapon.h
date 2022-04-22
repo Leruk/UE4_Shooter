@@ -7,6 +7,8 @@
 #include "RifleWeapon.generated.h"
 
 class UWeaponFXComponent;
+class UNiagaraSystem;
+class UNiagaraComponent;
 
 UCLASS()
 class SHOOTER_API ARifleWeapon : public ABaseWeapon
@@ -36,4 +38,11 @@ protected:
 	virtual void StopFire() override;
 
 	void MakeDamage(FHitResult HitResult);
+
+private:
+
+	UNiagaraComponent* MuzzleFXComponent;
+
+	void InitMuzzleFX();
+	void SetMuzzleFXVisibility(bool Visible);
 };
