@@ -2,9 +2,13 @@
 
 #include "Components/HealthComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/Controller.h"
+#include "GameFramework/Actor.h"
 #include "Player/BaseCharacter.h"
 #include "TimerManager.h"
-#include "GameFramework/Actor.h"
+#include "Camera/CameraShakeBase.h"
+#include "Camera/PlayerCameraManager.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -23,11 +27,12 @@ void UHealthComponent::BeginPlay()
 
 void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
 	
-	if (Damage <= 0.0f || IsDead()) return;
+	if (Damage <= 0.0f || IsDead() || !GetWorld()) return;
 
 	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
 
-	Player->OnChangedHealth.Broadcast(Health);
+	Player->OnChangedHealth.Broadcast(Health, -1.0f);
+
 
 	if (IsDead()) {
 		Player->Death.Broadcast();
@@ -35,12 +40,13 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 
 	Player->GetWorldTimerManager().SetTimer(TimerHandle, this, &UHealthComponent::AutoHeal, AutoHealData.TimeRate, true, AutoHealData.FirstDelay);
 
+	PlayCameraShake();
 }
 
 void UHealthComponent::AutoHeal() {
 	Health = FMath::Clamp(Health + AutoHealData.Heal, 0.0f, MaxHealth);
 
-	Player->OnChangedHealth.Broadcast(Health);
+	Player->OnChangedHealth.Broadcast(Health, 1.0f);
 }
 
 bool UHealthComponent::TryToAddHealth(int32 HealthAmount) {
@@ -48,7 +54,17 @@ bool UHealthComponent::TryToAddHealth(int32 HealthAmount) {
 
 	Health = FMath::Clamp(Health + HealthAmount, 0.0f, MaxHealth);
 
-	Player->OnChangedHealth.Broadcast(Health);
+	Player->OnChangedHealth.Broadcast(Health, 1.0f);
 
 	return true;
+}
+
+void UHealthComponent::PlayCameraShake()
+{
+	if (IsDead() && !Player) return;
+
+	const auto Controller = Player->GetController<APlayerController>();
+	if (!Controller || !Controller->PlayerCameraManager) return;
+
+	Controller->PlayerCameraManager->StartCameraShake(CameraShake);
 }

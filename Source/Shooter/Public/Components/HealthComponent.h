@@ -8,6 +8,7 @@
 #include "HealthComponent.generated.h"
 
 class ABaseCharacter;
+class UCameraShakeBase;
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -41,16 +42,20 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "AutoHeal")
 	FAutoHeal AutoHealData;
 
-	UPROPERTY()
 	ABaseCharacter* Player;
+
+	UPROPERTY(EditAnywhere, Category = "VFX")
+	TSubclassOf<UCameraShakeBase> CameraShake;
 
 
 private:
 
 	FTimerHandle TimerHandle;
+	float Health = 0.0f;
 
 	void AutoHeal();
 
-	float Health = 0.0f;
+	void PlayCameraShake();
+
 
 };

@@ -58,7 +58,7 @@ struct FWeaponUIData
 //HEALTH
 
 DECLARE_MULTICAST_DELEGATE(FOnDeath);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnChangedHealth, float);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnChangedHealth, float, float);
 
 USTRUCT(BlueprintType)
 struct FAutoHeal {

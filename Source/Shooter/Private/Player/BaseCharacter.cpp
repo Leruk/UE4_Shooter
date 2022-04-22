@@ -40,7 +40,7 @@ void ABaseCharacter::BeginPlay()
 	
 	Death.AddUObject(this, &ABaseCharacter::OnDeath);
 
-	OnChangedHealth.Broadcast(HealthComp->GetHealth());
+	OnChangedHealth.Broadcast(HealthComp->GetHealth(), 0.0f);
 
 }
 
@@ -98,8 +98,7 @@ bool ABaseCharacter::IsRun() const {
 
 void ABaseCharacter::OnDeath() {
 
-	PlayAnimMontage(DeathAnim);
-
+	//PlayAnimMontage(DeathAnim);
 	GetCharacterMovement()->DisableMovement();
 
 	SetLifeSpan(3.0f);
@@ -109,6 +108,10 @@ void ABaseCharacter::OnDeath() {
 	}
 
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	WeaponComponent->StopFire();
+
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetSimulatePhysics(true);
 }
 
 void ABaseCharacter::OnGroundLanded(const FHitResult& Hit) {
@@ -120,7 +123,7 @@ void ABaseCharacter::OnGroundLanded(const FHitResult& Hit) {
 	TakeDamage(Damage, FDamageEvent{}, Controller, this);
 }
 
-void ABaseCharacter::SetHealthText(float Health) {
+void ABaseCharacter::SetHealthText(float Health, float DeltaHealth) {
 
 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%0.0f"), HealthComp->GetHealth())));
 }

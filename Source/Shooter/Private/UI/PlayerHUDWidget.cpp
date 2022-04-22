@@ -5,7 +5,28 @@
 #include "GameFramework/Character.h"
 #include "Components/HealthComponent.h"
 #include "Components/WeaponComponent.h"
+#include "Player/BaseCharacter.h"
 #include "ShootUtils.h"
+
+bool UPlayerHUDWidget::Initialize() {
+
+	const auto Player = Cast<ABaseCharacter>(GetOwningPlayerPawn());
+	
+	if (Player) {
+		Player->OnChangedHealth.AddUObject(this, &UPlayerHUDWidget::OnHealthChanged);	
+	}
+
+	return Super::Initialize();
+
+}
+
+void UPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta) {
+
+	if (HealthDelta < 0.0f) {
+		OnTakeDamage();
+	}
+
+}
 
 float UPlayerHUDWidget::GetHealthPercent() const {
 

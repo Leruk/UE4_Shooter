@@ -34,7 +34,14 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	bool IsPlayerSpectating() const;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void OnTakeDamage();
+
+	virtual bool Initialize() override;
+
 private:
 
 	FString PrintAmmo(FAmmoData& AmmoData) const;
+
+	void OnHealthChanged(float Health, float DeltaHealth);
 };

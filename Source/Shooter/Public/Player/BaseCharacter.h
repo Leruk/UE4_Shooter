@@ -12,6 +12,7 @@ class UCameraComponent;
 class UHealthComponent;
 class UTextRenderComponent;
 class UWeaponComponent;
+class UCameraShake;
 
 UCLASS()
 class SHOOTER_API ABaseCharacter : public ACharacter
@@ -78,5 +79,5 @@ private:
 	UFUNCTION()
 	void OnGroundLanded(const FHitResult& Hit);
 
-	void SetHealthText(float Health);
+	void SetHealthText(float Health, float DeltaHealth);
 };
