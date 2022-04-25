@@ -49,19 +49,14 @@ void ARifleWeapon::MakeShot() {
 
 	float BetweenAngle = AngleBetweenVectors(GetMuzzleTransform().GetRotation().GetForwardVector(), HitDirectionMuzzle);
 
+	FVector TraceFXEnd = TraceEnd;
+	
 	if (HitResult.bBlockingHit && BetweenAngle <= 90) {
-		/*DrawDebugLine(GetWorld(), GetMuzzleTransform().GetLocation(), HitResult.ImpactPoint, FColor::Red, 0, 3.0f, false, 3.0f);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Blue, false, 5.0f);*/
-
-		WeaponFXComponent->PlayImpactFX(HitResult);
-
+		TraceFXEnd = HitResult.ImpactPoint;
 		MakeDamage(HitResult);
-
+		WeaponFXComponent->PlayImpactFX(HitResult);
 	}
-	else {
-		DrawDebugLine(GetWorld(), GetMuzzleTransform().GetLocation(), TraceEnd, FColor::Red, 0, 3.0f, false, 3.0f);
-	}
-
+	SpawnFXTrace(GetMuzzleTransform().GetLocation(), TraceEnd);
 	DecreaseAmmo();
 }
 
@@ -105,5 +100,13 @@ void ARifleWeapon::SetMuzzleFXVisibility(bool Visible)
 	if (MuzzleFXComponent) {
 		MuzzleFXComponent->SetPaused(!Visible);
 		MuzzleFXComponent->SetVisibility(Visible, false);
+	}
+}
+
+void ARifleWeapon::SpawnFXTrace(const FVector& TraceStart, const FVector& TraceEnd)
+{
+	const auto TraceFXComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), RifleTraceFXComponent, TraceStart);
+	if (TraceFXComponent) {
+		TraceFXComponent->SetNiagaraVariableVec3(TraceTargetName, TraceEnd);
 	}
 }

@@ -7,8 +7,8 @@
 #include "RifleWeapon.generated.h"
 
 class UWeaponFXComponent;
-class UNiagaraSystem;
 class UNiagaraComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class SHOOTER_API ARifleWeapon : public ABaseWeapon
@@ -29,6 +29,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "VFX")
 	UWeaponFXComponent* WeaponFXComponent;
 
+	UPROPERTY(EditAnywhere, Category = "VFX")
+	UNiagaraSystem* RifleTraceFXComponent;
+
+	UPROPERTY(EditAnywhere, Category = "VFX")
+	FString TraceTargetName = "TraceTarget";
+
 	virtual void MakeShot() override;
 
 	virtual bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const override;
@@ -45,4 +51,6 @@ private:
 
 	void InitMuzzleFX();
 	void SetMuzzleFXVisibility(bool Visible);
+
+	void SpawnFXTrace(const FVector& TraceStart, const FVector& TraceEnd);
 };
