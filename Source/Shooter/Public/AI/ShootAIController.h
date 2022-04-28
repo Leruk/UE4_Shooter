@@ -14,6 +14,8 @@ class SHOOTER_API AShootAIController : public AAIController
 {
 	GENERATED_BODY()
 
+protected:
 
+	virtual void OnPossess(APawn* InPawn) override;
 	
 };

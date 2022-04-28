@@ -6,9 +6,8 @@
 #include "Player/BaseCharacter.h"
 #include "AICharacter.generated.h"
 
-/**
- * 
- */
+class UBehaviorTree;
+
 UCLASS()
 class SHOOTER_API AAICharacter : public ABaseCharacter
 {
@@ -17,4 +16,7 @@ class SHOOTER_API AAICharacter : public ABaseCharacter
 public:
 
 	AAICharacter(const FObjectInitializer& ObjInit);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
+		UBehaviorTree* BehaviorTree;
 };
