@@ -6,9 +6,7 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "NextLocationTaskNode.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class SHOOTER_API UNextLocationTaskNode : public UBTTaskNode
 {
@@ -27,5 +25,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Navigation")
 	FBlackboardKeySelector AimLocationKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Navigation")
+	bool SelfCenter = true;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Navigation", meta = (EditCondition = "!SelfCenter"))
+	FBlackboardKeySelector CenterActorKey;
 };

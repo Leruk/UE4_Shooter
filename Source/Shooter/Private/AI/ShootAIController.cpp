@@ -4,6 +4,7 @@
 #include "AI/ShootAIController.h"
 #include "AI/AICharacter.h"
 #include "Components/ShootAIPerceptionComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 AShootAIController::AShootAIController()
 {
@@ -26,6 +27,12 @@ void AShootAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	const auto AimActor = ShootAIPerceptionComponent->GetClosestEnemy();
+	const auto AimActor = GetFocusOnActor();
 	SetFocus(AimActor);
+}
+
+AActor* AShootAIController::GetFocusOnActor() const
+{
+	if (!GetBlackboardComponent()) return nullptr;
+	return Cast<AActor>(GetBlackboardComponent()->GetValueAsObject(FocusOnKeyName));
 }
