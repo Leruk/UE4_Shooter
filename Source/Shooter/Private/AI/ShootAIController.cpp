@@ -3,6 +3,13 @@
 
 #include "AI/ShootAIController.h"
 #include "AI/AICharacter.h"
+#include "Components/ShootAIPerceptionComponent.h"
+
+AShootAIController::AShootAIController()
+{
+	ShootAIPerceptionComponent = CreateDefaultSubobject<UShootAIPerceptionComponent>("AIPerceptionComponent");
+	SetPerceptionComponent(*ShootAIPerceptionComponent);
+}
 
 void AShootAIController::OnPossess(APawn* InPawn)
 {
@@ -13,4 +20,12 @@ void AShootAIController::OnPossess(APawn* InPawn)
 	if (AICharacter) {
 		RunBehaviorTree(AICharacter->BehaviorTree);
 	}
+}
+
+void AShootAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	const auto AimActor = ShootAIPerceptionComponent->GetClosestEnemy();
+	SetFocus(AimActor);
 }
