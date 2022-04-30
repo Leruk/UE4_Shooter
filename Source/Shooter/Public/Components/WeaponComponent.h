@@ -10,19 +10,19 @@
 class ABaseWeapon;
 class USkeletalMeshComponent;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTER_API UWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 
 	UWeaponComponent();
 
-	void StartFire();
+	virtual void StartFire();
 	void StopFire();
 
-	void NextWeapon();
+	virtual void NextWeapon();
 
 	void Reload();
 
@@ -55,32 +55,33 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* CurrentReloadAnim;
 
-	bool EquipInProgress = false;
-	bool ReloadInProgress = false;
-
-private:
-
 	UPROPERTY()
 	ABaseWeapon* CurrentWeapon = nullptr;
 
 	UPROPERTY()
 	TArray<ABaseWeapon*> Weapons;
 
+	bool EquipInProgress = false;
+	bool ReloadInProgress = false;
+
 	int32 CurrentWeaponIndex = 0;
+
+	bool CanFire() const;
+	bool CanEquip() const;
+
+	void EquipFinished(USkeletalMeshComponent* SkeletalMesh);
+
+	void EquipWeapon(int32 CurrentWeaponIndex);
+
+private:
 
 	void SpawnWeapons();
 
 	void AttachWeaponToSocket(ABaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
 
-	void EquipWeapon(int32 CurrentWeaponIndex);
-
 	void AnimInit();
-
-	void EquipFinished(USkeletalMeshComponent* SkeletalMesh);
 
 	void ReloadFinished(USkeletalMeshComponent* SkeletalMesh);
 
-	bool CanFire() const;
-	bool CanEquip() const;
 	bool CanReload() const;
 };

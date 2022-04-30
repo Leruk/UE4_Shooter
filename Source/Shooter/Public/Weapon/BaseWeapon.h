@@ -33,6 +33,7 @@ public:
 
 	bool TryToAddAmmo(int32 ClipsAmount);
 
+	bool IsAmmoEmpty() const;
 
 protected:
 	
@@ -70,7 +71,6 @@ protected:
 	UNiagaraComponent* SpawnMuzzleFX();
 
 	void DecreaseAmmo();
-	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
 	void LogAmmo();
 	bool IsAmmoFull() const;

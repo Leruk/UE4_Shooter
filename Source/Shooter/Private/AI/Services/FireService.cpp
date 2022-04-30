@@ -26,5 +26,5 @@ void UFireService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory
 		}
 
 	}
-
+	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 }
