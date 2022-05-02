@@ -35,6 +35,8 @@ public:
 
 	bool IsAmmoEmpty() const;
 
+	bool IsAmmoFull() const;
+
 protected:
 	
 	virtual void BeginPlay() override;
@@ -73,7 +75,6 @@ protected:
 	void DecreaseAmmo();
 	bool IsClipEmpty() const;
 	void LogAmmo();
-	bool IsAmmoFull() const;
 
 
 private:
