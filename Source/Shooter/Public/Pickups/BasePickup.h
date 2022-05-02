@@ -17,6 +17,8 @@ public:
 
 	ABasePickup();
 
+	bool CouldBeTaken() const;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USphereComponent* CollisionComponent;
@@ -30,6 +32,8 @@ protected:
 	float RespawnTime = 5.0f;
 
 private:
+
+	FTimerHandle RespawnTimerHandle;
 
 	float RotationYaw = 0.0f;
 

@@ -49,7 +49,6 @@ void ABasePickup::PickupWasTaken() {
 	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	GetRootComponent()->SetVisibility(false, true);
 
-	FTimerHandle RespawnTimerHandle;
 	GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &ABasePickup::Respawn, RespawnTime);
 }
 
@@ -64,4 +63,9 @@ void ABasePickup::Respawn()
 void ABasePickup::GenerateRotationYaw() {
 	const auto Direction = FMath::RandBool() ? 1.0f : -1.0f;
 	RotationYaw = FMath::RandRange(1.5f, 2.0f) * Direction;
+}
+
+bool ABasePickup::CouldBeTaken() const
+{
+	return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
 }
