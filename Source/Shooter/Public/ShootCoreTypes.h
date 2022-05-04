@@ -108,3 +108,14 @@ struct FImpactData {
 		UNiagaraSystem* Effect;
 
 };
+
+
+USTRUCT(BlueprintType)
+struct FGameData {
+
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "1.0", ClampMax = "100.0"))
+	int32 PlayersNum = 2;
+
+};
