@@ -29,6 +29,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void SetPlayerColor(const FLinearColor& Color);
+
 	FOnDeath Death;
 	FOnChangedHealth OnChangedHealth;
 
@@ -60,6 +62,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Fall")
 	FVector2D LandedVelocity = (900.0f, 1200.0f);
 
+	UPROPERTY(EditDefaultsOnly, Category = "Material")
+	FName MaterialColorName = "Paint Color";
+
 	virtual void OnDeath();
 
 private:
@@ -72,7 +77,6 @@ private:
 
 	void Sprint();
 	void StopSprint();
-
 
 	UFUNCTION()
 	void OnGroundLanded(const FHitResult& Hit);

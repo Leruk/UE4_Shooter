@@ -9,7 +9,7 @@
 AAICharacter::AAICharacter(const FObjectInitializer& ObjInit) 
 	: Super(ObjInit.SetDefaultSubobjectClass<UAIWeaponComponent>("WeaponComponent"))
 {
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AutoPossessAI = EAutoPossessAI::Disabled;
 	AIControllerClass = AShootAIController::StaticClass();
 }
 

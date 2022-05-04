@@ -115,7 +115,7 @@ void ABaseWeapon::DecreaseAmmo() {
 		return;
 	}
 	CurrentAmmo.Bullets--;
-	LogAmmo();
+	//LogAmmo();
 
 	if (IsClipEmpty() && !IsAmmoEmpty())
 	{
@@ -144,7 +144,6 @@ void ABaseWeapon::ChangeClip() {
 		CurrentAmmo.Clips--;
 	}
 	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
-	UE_LOG(LogTemp, Display, TEXT("----CLIP IS CHANGED-----"));
 
 }
 
