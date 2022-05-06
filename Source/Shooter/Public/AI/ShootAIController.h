@@ -7,6 +7,7 @@
 #include "ShootAIController.generated.h"
 
 class UShootAIPerceptionComponent;
+class URespawnComponent;
 
 UCLASS()
 class SHOOTER_API AShootAIController : public AAIController
@@ -21,6 +22,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UShootAIPerceptionComponent* ShootAIPerceptionComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	URespawnComponent* RespawnComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 		FName FocusOnKeyName = "EnemyActor";

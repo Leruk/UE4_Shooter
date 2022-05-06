@@ -7,6 +7,10 @@
 #include "AIController.h"
 #include "UI/GameHUD.h"
 #include "Player/ShootPlayerState.h"
+#include "ShootUtils.h"
+#include "Components/RespawnComponent.h"
+
+constexpr static int32 MinRoundTimeForRespawn = 10;
 
 AShooterGameModeBase::AShooterGameModeBase()
 {
@@ -169,4 +173,26 @@ void AShooterGameModeBase::Killed(AController* KillerContoller, AController* Vic
 	{
 		VictimPlayerState->AddDeath();
 	}
+
+	StartRespawn(VictimController);
+}
+
+
+void AShooterGameModeBase::StartRespawn(AController* Controller)
+{
+
+	const auto RespawnAvailable = RoundCountDown > MinRoundTimeForRespawn;
+	if (!RespawnAvailable) return;
+
+	UE_LOG(LogTemp, Display, TEXT("HI"));
+
+	const auto RespawnComponent = Utils::GetPlayerComponent<URespawnComponent>(Controller);
+	if (!RespawnComponent) return;
+
+	RespawnComponent->Respawn(GameData.RespawnTime);
+}
+
+void AShooterGameModeBase::RespawnRequest(AController* Controller)
+{
+	ResetOnePlayer(Controller);
 }

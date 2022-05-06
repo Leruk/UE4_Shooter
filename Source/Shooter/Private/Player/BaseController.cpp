@@ -2,4 +2,9 @@
 
 
 #include "Player/BaseController.h"
+#include "Components/RespawnComponent.h"
 
+ABaseController::ABaseController()
+{
+	RespawnComponent = CreateDefaultSubobject<URespawnComponent>("RespawnComponent");
+}

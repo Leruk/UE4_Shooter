@@ -23,6 +23,12 @@ public:
 
 	void Killed(AController* KillerContoller, AController* VictimController);
 
+	int32 GetRoundsNum() { return GameData.RoundsNum; }
+	int32 GetCurrentRoundNum() { return CurrentRound; }
+	int32 GetRoundSecondsRemaining() { return RoundCountDown; }
+
+	void RespawnRequest(AController* Controller);
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
@@ -51,4 +57,6 @@ private:
 	void SetPlayerColor(AController* Controller);
 
 	void LogPlayerInfo();
+
+	void StartRespawn(AController* Controller);
 };
