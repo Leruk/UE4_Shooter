@@ -9,6 +9,7 @@
 #include "TimerManager.h"
 #include "Camera/CameraShakeBase.h"
 #include "Camera/PlayerCameraManager.h"
+#include <Shooter/ShooterGameModeBase.h>
 
 UHealthComponent::UHealthComponent()
 {
@@ -35,6 +36,7 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 
 
 	if (IsDead()) {
+		Killed(InstigatedBy);
 		Player->Death.Broadcast();
 	}
 
@@ -67,4 +69,18 @@ void UHealthComponent::PlayCameraShake()
 	if (!Controller || !Controller->PlayerCameraManager) return;
 
 	Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+}
+
+void UHealthComponent::Killed(AController* KillerController)
+{
+	if (!GetWorld()) return;
+
+	const auto GameMode = Cast<AShooterGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) return; 
+
+
+	const auto VictimController = Player ? Player->Controller : nullptr;
+
+	GameMode->Killed(KillerController, VictimController);
+
 }

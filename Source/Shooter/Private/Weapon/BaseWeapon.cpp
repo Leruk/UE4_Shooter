@@ -47,14 +47,6 @@ float ABaseWeapon::AngleBetweenVectors(FVector First, FVector Second) {
 	return FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(First, Second)));
 }
 
-AController* ABaseWeapon::GetCharacterController() const {
-	const auto Player = Cast<ACharacter>(GetOwner());
-
-	if (!Player) return nullptr;
-
-	return Player->GetController();
-}
-
 bool ABaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const {
 
 	const auto Character = Cast<ACharacter>(GetOwner());
@@ -62,7 +54,7 @@ bool ABaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotati
 
 	if (Character->IsPlayerControlled())
 	{
-		const auto Controller = GetCharacterController();
+		const auto Controller = Character->GetController<AController>();
 
 		if (!Controller) return false;
 

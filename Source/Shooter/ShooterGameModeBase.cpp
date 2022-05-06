@@ -73,6 +73,7 @@ void AShooterGameModeBase::GameTimerUpdate()
 		else
 		{
 			UE_LOG(LogTemp, Display, TEXT("-------- GAME OVER --------"));
+			LogPlayerInfo();
 		}
 	}
 }
@@ -138,4 +139,34 @@ void AShooterGameModeBase::SetPlayerColor(AController* Controller)
 	if (!PlayerState) return;
 
 	Character->SetPlayerColor(PlayerState->GetTeamColor());
+}
+
+void AShooterGameModeBase::LogPlayerInfo()
+{
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		const auto Controller = It->Get();
+		if (!Controller) continue;
+
+		const auto PlayerState = Cast<AShootPlayerState>(Controller->PlayerState);
+		if (!PlayerState) continue;
+
+		PlayerState->LogInfo();
+	}
+}
+
+void AShooterGameModeBase::Killed(AController* KillerContoller, AController* VictimController)
+{
+	const auto KillerPlayerState = KillerContoller ? Cast<AShootPlayerState>(KillerContoller->PlayerState) : nullptr;
+	const auto VictimPlayerState = KillerContoller ? Cast<AShootPlayerState>(VictimController->PlayerState) : nullptr;
+
+	if (KillerPlayerState)
+	{
+		KillerPlayerState->AddKill();
+	}
+
+	if (VictimPlayerState)
+	{
+		VictimPlayerState->AddDeath();
+	}
 }

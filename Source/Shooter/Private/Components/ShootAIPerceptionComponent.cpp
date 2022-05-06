@@ -22,7 +22,11 @@ AActor* UShootAIPerceptionComponent::GetClosestEnemy() const {
 	AActor* BestPawn = nullptr;
 	for (auto PercieveActor : PercieveActors) {
 		const auto HealthComponent = Utils::GetPlayerComponent<UHealthComponent>(PercieveActor);
-		if (HealthComponent && !HealthComponent->IsDead()) {
+
+		const auto PercievePawn = Cast<APawn>(PercieveActor);
+		const auto AreEnemies = PercievePawn && Utils::AreEnemies(Controller, PercievePawn->GetController());
+
+		if (HealthComponent && !HealthComponent->IsDead() && AreEnemies) {
 			const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
 			if (CurrentDistance < BestDistance) {
 				BestDistance = CurrentDistance;

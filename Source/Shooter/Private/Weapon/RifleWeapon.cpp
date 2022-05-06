@@ -83,7 +83,7 @@ void ARifleWeapon::MakeDamage(FHitResult HitResult) {
 
 	if (!DamagedActor) return;
 
-	DamagedActor->TakeDamage(10.0f, FDamageEvent{}, GetCharacterController(), this);
+	DamagedActor->TakeDamage(10.0f, FDamageEvent{}, GetController(), this);
 
 }
 
@@ -109,4 +109,10 @@ void ARifleWeapon::SpawnFXTrace(const FVector& TraceStart, const FVector& TraceE
 	if (TraceFXComponent) {
 		TraceFXComponent->SetNiagaraVariableVec3(TraceTargetName, TraceEnd);
 	}
+}
+
+AController* ARifleWeapon::GetController() const
+{
+	const auto Pawn = Cast<APawn>(GetOwner());
+	return Pawn ? Pawn->GetController() : nullptr;
 }

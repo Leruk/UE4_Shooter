@@ -57,5 +57,5 @@ private:
 
 	void PlayCameraShake();
 
-
+	void Killed(AController* KillerController);
 };
