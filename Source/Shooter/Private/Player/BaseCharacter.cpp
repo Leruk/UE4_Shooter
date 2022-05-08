@@ -31,16 +31,16 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit)
 
 	OnTakeAnyDamage.AddDynamic(HealthComp, &UHealthComponent::OnTakeAnyDamage);
 	LandedDelegate.AddDynamic(this, &ABaseCharacter::OnGroundLanded);
-	OnChangedHealth.AddUObject(this, &ABaseCharacter::SetHealthText);
+	HealthComp->OnChangedHealth.AddUObject(this, &ABaseCharacter::SetHealthText);
 }
 
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Death.AddUObject(this, &ABaseCharacter::OnDeath);
+	HealthComp->Death.AddUObject(this, &ABaseCharacter::OnDeath);
 
-	OnChangedHealth.Broadcast(HealthComp->GetHealth(), 0.0f);
+	HealthComp->OnChangedHealth.Broadcast(HealthComp->GetHealth(), 0.0f);
 
 }
 

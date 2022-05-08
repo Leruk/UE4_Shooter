@@ -10,15 +10,26 @@
 
 bool UPlayerHUDWidget::Initialize() {
 
-	const auto Player = Cast<ABaseCharacter>(GetOwningPlayerPawn());
-	
-	if (Player) {
-		Player->OnChangedHealth.AddUObject(this, &UPlayerHUDWidget::OnHealthChanged);	
+	if (GetOwningPlayer())
+	{
+		GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &UPlayerHUDWidget::OnNewPawn);
+		OnNewPawn(GetOwningPlayerPawn());
 	}
 
-	return Super::Initialize();
 
+	return Super::Initialize();
 }
+
+void UPlayerHUDWidget::OnNewPawn(APawn* NewPawn)
+{
+	const auto HealthComponent = Utils::GetPlayerComponent<UHealthComponent>(NewPawn);
+
+	if (HealthComponent)
+	{
+		HealthComponent->OnChangedHealth.AddUObject(this, &UPlayerHUDWidget::OnHealthChanged);
+	}
+}
+
 
 void UPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta) {
 

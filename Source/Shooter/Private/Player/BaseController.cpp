@@ -8,3 +8,10 @@ ABaseController::ABaseController()
 {
 	RespawnComponent = CreateDefaultSubobject<URespawnComponent>("RespawnComponent");
 }
+
+void ABaseController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	OnNewPawn.Broadcast(InPawn);
+}

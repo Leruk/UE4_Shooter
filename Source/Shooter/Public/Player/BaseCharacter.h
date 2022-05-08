@@ -31,9 +31,6 @@ public:
 
 	void SetPlayerColor(const FLinearColor& Color);
 
-	FOnDeath Death;
-	FOnChangedHealth OnChangedHealth;
-
 protected:
 
 	virtual void BeginPlay() override;

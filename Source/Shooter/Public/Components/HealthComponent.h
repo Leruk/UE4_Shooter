@@ -32,6 +32,9 @@ public:
 
 	bool TryToAddHealth(int32 HealthAmount);
 
+	FOnDeath Death;
+	FOnChangedHealth OnChangedHealth;
+
 protected:
 
 	virtual void BeginPlay() override;

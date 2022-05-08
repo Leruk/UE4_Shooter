@@ -9,9 +9,8 @@
 #include "Components/HealthComponent.h"
 #include "PlayerHUDWidget.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class SHOOTER_API UPlayerHUDWidget : public UUserWidget
 {
@@ -44,4 +43,5 @@ private:
 	FString PrintAmmo(FAmmoData& AmmoData) const;
 
 	void OnHealthChanged(float Health, float DeltaHealth);
+	void OnNewPawn(APawn* NewPawn);
 };

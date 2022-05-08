@@ -32,12 +32,12 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 
 	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
 
-	Player->OnChangedHealth.Broadcast(Health, -1.0f);
+	OnChangedHealth.Broadcast(Health, -1.0f);
 
 
 	if (IsDead()) {
 		Killed(InstigatedBy);
-		Player->Death.Broadcast();
+		Death.Broadcast();
 	}
 
 	Player->GetWorldTimerManager().SetTimer(TimerHandle, this, &UHealthComponent::AutoHeal, AutoHealData.TimeRate, true, AutoHealData.FirstDelay);
@@ -48,7 +48,7 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 void UHealthComponent::AutoHeal() {
 	Health = FMath::Clamp(Health + AutoHealData.Heal, 0.0f, MaxHealth);
 
-	Player->OnChangedHealth.Broadcast(Health, 1.0f);
+	OnChangedHealth.Broadcast(Health, 1.0f);
 }
 
 bool UHealthComponent::TryToAddHealth(int32 HealthAmount) {
@@ -56,7 +56,7 @@ bool UHealthComponent::TryToAddHealth(int32 HealthAmount) {
 
 	Health = FMath::Clamp(Health + HealthAmount, 0.0f, MaxHealth);
 
-	Player->OnChangedHealth.Broadcast(Health, 1.0f);
+	OnChangedHealth.Broadcast(Health, 1.0f);
 
 	return true;
 }

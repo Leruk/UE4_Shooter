@@ -115,22 +115,22 @@ struct FGameData {
 
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "1.0", ClampMax = "100.0"))
-	int32 PlayersNum = 2;
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "1.0", ClampMax = "100.0"))
+		int32 PlayersNum = 2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "1", ClampMax = "10"))
-	int32 RoundsNum = 4;
+		int32 RoundsNum = 4;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "3", ClampMax = "300"))
-	int32 RoundsTime = 10; //time in seconds
+		int32 RoundsTime = 10; //time in seconds
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "3", ClampMax = "300"))
-	int32 RespawnTime = 5; //time in seconds
+		int32 RespawnTime = 5; //time in seconds
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
-	FLinearColor DefaultTeamColor = FLinearColor::Red;
+		FLinearColor DefaultTeamColor = FLinearColor::Red;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
-	TArray<FLinearColor> TeamColors;
+		TArray<FLinearColor> TeamColors;
 
 };

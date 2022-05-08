@@ -9,6 +9,7 @@
 #include "Player/ShootPlayerState.h"
 #include "ShootUtils.h"
 #include "Components/RespawnComponent.h"
+#include "EngineUtils.h"
 
 constexpr static int32 MinRoundTimeForRespawn = 10;
 
@@ -76,8 +77,7 @@ void AShooterGameModeBase::GameTimerUpdate()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Display, TEXT("-------- GAME OVER --------"));
-			LogPlayerInfo();
+			GameOver();
 		}
 	}
 }
@@ -195,4 +195,19 @@ void AShooterGameModeBase::StartRespawn(AController* Controller)
 void AShooterGameModeBase::RespawnRequest(AController* Controller)
 {
 	ResetOnePlayer(Controller);
+}
+
+void AShooterGameModeBase::GameOver()
+{
+	UE_LOG(LogTemp, Display, TEXT("-------- GAME OVER --------"));
+	LogPlayerInfo();
+
+	for(auto Pawn : TActorRange<APawn>(GetWorld()))
+	{
+		if (Pawn) 
+		{
+			Pawn->TurnOff();
+			Pawn->DisableInput(nullptr);
+		}
+	}
 }
