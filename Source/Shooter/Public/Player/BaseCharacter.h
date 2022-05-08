@@ -7,12 +7,8 @@
 #include "ShootCoreTypes.h"
 #include "BaseCharacter.generated.h"
 
-class USpringArmComponent;
-class UCameraComponent;
 class UHealthComponent;
-class UTextRenderComponent;
 class UWeaponComponent;
-class UCameraShake;
 
 UCLASS()
 class SHOOTER_API ABaseCharacter : public ACharacter
@@ -24,10 +20,9 @@ public:
 	ABaseCharacter(const FObjectInitializer& ObjInit);
 
 	UFUNCTION(BlueprintCallable)
-	bool IsRun() const;
+	virtual bool IsRun() const;
 
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void SetPlayerColor(const FLinearColor& Color);
 
@@ -36,16 +31,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	USpringArmComponent* SpringArmComp;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	UCameraComponent* CameraComp;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	UHealthComponent* HealthComp;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	UTextRenderComponent* HealthTextComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	UWeaponComponent* WeaponComponent;
@@ -65,15 +51,6 @@ protected:
 	virtual void OnDeath();
 
 private:
-
-	bool GoForward = false;
-	bool WantToRun = false;
-
-	void MoveForward(float Amount);
-	void MoveRight(float Amount);
-
-	void Sprint();
-	void StopSprint();
 
 	UFUNCTION()
 	void OnGroundLanded(const FHitResult& Hit);
