@@ -28,11 +28,13 @@ void AShooterGameModeBase::StartPlay()
 	CreateTeamsInfo();
 
 	StartRound();
+
+	SetMatchState(EMatchState::InProgress);
 }
 
 UClass* AShooterGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
 {
-	if (InController && InController->IsA<AAIController>()) 
+	if (InController && InController->IsA<AAIController>())
 	{
 		return AIPawnClass;
 	}
@@ -43,8 +45,8 @@ UClass* AShooterGameModeBase::GetDefaultPawnClassForController_Implementation(AC
 void AShooterGameModeBase::SpawnBots()
 {
 	if (!GetWorld()) return;
-		
-	for (int32 i = 0; i < GameData.PlayersNum - 1; ++i) 
+
+	for (int32 i = 0; i < GameData.PlayersNum - 1; ++i)
 	{
 		FActorSpawnParameters SpawnInfo;
 		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -65,11 +67,11 @@ void AShooterGameModeBase::GameTimerUpdate()
 {
 	UE_LOG(LogTemp, Display, TEXT("Time: %i / Round %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
 
-	if (--RoundCountDown == 0) 
+	if (--RoundCountDown == 0)
 	{
 		GetWorldTimerManager().ClearTimer(GameRoundTimerHandle);
 
-		if (CurrentRound + 1 <= GameData.RoundsNum) 
+		if (CurrentRound + 1 <= GameData.RoundsNum)
 		{
 			++CurrentRound;
 			ResetPlayers();
@@ -84,7 +86,7 @@ void AShooterGameModeBase::GameTimerUpdate()
 
 void AShooterGameModeBase::ResetPlayers()
 {
-	for (auto It = GetWorld()->GetControllerIterator(); It; ++It) 
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
 		ResetOnePlayer(It->Get());
 	}
@@ -125,7 +127,7 @@ FLinearColor AShooterGameModeBase::DetermineColorByTeamID(int32 TeamID) const
 {
 	if (TeamID - 1 < GameData.TeamColors.Num())
 	{
-		return GameData.TeamColors[TeamID-1];
+		return GameData.TeamColors[TeamID - 1];
 	}
 	UE_LOG(LogTemp, Display, TEXT("TeamID is wrong"));
 
@@ -202,12 +204,47 @@ void AShooterGameModeBase::GameOver()
 	UE_LOG(LogTemp, Display, TEXT("-------- GAME OVER --------"));
 	LogPlayerInfo();
 
-	for(auto Pawn : TActorRange<APawn>(GetWorld()))
+	for (auto Pawn : TActorRange<APawn>(GetWorld()))
 	{
-		if (Pawn) 
+		if (Pawn)
 		{
 			Pawn->TurnOff();
 			Pawn->DisableInput(nullptr);
 		}
 	}
+	SetMatchState(EMatchState::Gameover);
+}
+
+void AShooterGameModeBase::SetMatchState(EMatchState State)
+{
+	if (MatchState == State) return;
+
+	MatchState = State;
+	OnMatchStateChanged.Broadcast(MatchState);
+}
+
+bool AShooterGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+	const auto PauseSet = Super::SetPause(PC, CanUnpauseDelegate);
+
+	if (PauseSet)
+	{
+		SetMatchState(EMatchState::Pause);
+	}
+
+
+	return PauseSet;
+}
+
+bool AShooterGameModeBase::ClearPause()
+{
+	const auto PauseCancel = Super::ClearPause();
+
+	if (PauseCancel)
+	{
+		SetMatchState(EMatchState::InProgress);
+	}
+
+
+	return PauseCancel;
 }

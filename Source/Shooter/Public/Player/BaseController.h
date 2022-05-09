@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "ShootCoreTypes.h"
 #include "BaseController.generated.h"
 
 class URespawnComponent;
@@ -22,5 +23,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	URespawnComponent* RespawnComponent;
 
+	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void SetupInputComponent() override;
+
+private:
+	void OnPauseGame();
+	void OnMatchStateChanged(EMatchState State);
 };
