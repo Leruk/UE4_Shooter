@@ -117,6 +117,7 @@ void AShooterGameModeBase::CreateTeamsInfo()
 
 		PlayerState->SetTeamId(TeamID);
 		PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
+		PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : "Bot");
 		SetPlayerColor(Controller);
 
 		TeamID = TeamID == 1 ? 2 : 1;
@@ -212,7 +213,7 @@ void AShooterGameModeBase::GameOver()
 			Pawn->DisableInput(nullptr);
 		}
 	}
-	SetMatchState(EMatchState::Gameover);
+	SetMatchState(EMatchState::GameOver);
 }
 
 void AShooterGameModeBase::SetMatchState(EMatchState State)

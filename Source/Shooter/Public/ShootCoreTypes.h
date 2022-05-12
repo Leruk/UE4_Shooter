@@ -141,7 +141,7 @@ enum class EMatchState : uint8
 	WaitingToStart = 0,
 	InProgress,
 	Pause,
-	Gameover
+	GameOver
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMatchStateChangedSignature, EMatchState);
