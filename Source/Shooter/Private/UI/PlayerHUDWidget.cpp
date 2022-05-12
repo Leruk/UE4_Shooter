@@ -8,16 +8,13 @@
 #include "Player/BaseCharacter.h"
 #include "ShootUtils.h"
 
-bool UPlayerHUDWidget::Initialize() {
+void UPlayerHUDWidget::NativeOnInitialized() {
 
 	if (GetOwningPlayer())
 	{
 		GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &UPlayerHUDWidget::OnNewPawn);
 		OnNewPawn(GetOwningPlayerPawn());
 	}
-
-
-	return Super::Initialize();
 }
 
 void UPlayerHUDWidget::OnNewPawn(APawn* NewPawn)

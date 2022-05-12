@@ -9,8 +9,6 @@
 #include "Components/HealthComponent.h"
 #include "PlayerHUDWidget.generated.h"
 
-
-
 UCLASS()
 class SHOOTER_API UPlayerHUDWidget : public UUserWidget
 {
@@ -36,7 +34,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
 	void OnTakeDamage();
 
-	virtual bool Initialize() override;
+	virtual void NativeOnInitialized() override;
 
 private:
 

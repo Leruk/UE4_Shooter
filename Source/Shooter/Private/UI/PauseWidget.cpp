@@ -5,7 +5,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Components/Button.h"
 
-bool UPauseWidget::Initialize()
+void UPauseWidget::NativeOnInitialized()
 {
 	const auto InitStatus = Super::Initialize();
 
@@ -14,7 +14,6 @@ bool UPauseWidget::Initialize()
 		CancelPauseButton->OnClicked.AddDynamic(this, &UPauseWidget::OnCancelPause);
 	}
 
-	return InitStatus;
 }
 
 void UPauseWidget::OnCancelPause()

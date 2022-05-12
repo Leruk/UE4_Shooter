@@ -12,14 +12,12 @@ UCLASS()
 class SHOOTER_API UPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-public:
-
-	virtual bool Initialize() override;
 
 protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* CancelPauseButton;
+
+	virtual void NativeOnInitialized() override;
 
 private:
 	UFUNCTION()
