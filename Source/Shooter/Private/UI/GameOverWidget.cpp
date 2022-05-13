@@ -9,6 +9,7 @@
 #include "Components/Button.h"
 #include "ShootUtils.h"
 #include "Kismet/GameplayStatics.h"
+#include "ShootGameInstance.h"
 
 void UGameOverWidget::NativeOnInitialized()
 {
@@ -24,6 +25,11 @@ void UGameOverWidget::NativeOnInitialized()
 	if (ResetLevelButton)
 	{
 		ResetLevelButton->OnClicked.AddDynamic(this, &UGameOverWidget::OnResetLevel);
+	}
+
+	if (MainMenuButton)
+	{
+		MainMenuButton->OnClicked.AddDynamic(this, &UGameOverWidget::OnGoToMenu);
 	}
 
 }
@@ -68,4 +74,19 @@ void UGameOverWidget::OnResetLevel()
 	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
 
 	UGameplayStatics::OpenLevel(this, FName(CurrentLevelName));
+}
+
+void UGameOverWidget::OnGoToMenu()
+{
+	if (!GetWorld()) return;
+
+	const auto GameInstance = GetWorld()->GetGameInstance<UShootGameInstance>();
+
+	if (GameInstance->GetMainMenuName().IsNone())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Level name is NONE"));
+		return;
+	}
+
+	UGameplayStatics::OpenLevel(this, GameInstance->GetMainMenuName());
 }
