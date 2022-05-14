@@ -82,11 +82,11 @@ void UGameOverWidget::OnGoToMenu()
 
 	const auto GameInstance = GetWorld()->GetGameInstance<UShootGameInstance>();
 
-	if (GameInstance->GetMainMenuName().IsNone())
+	if (GameInstance->GetMenuLevelName().IsNone())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Level name is NONE"));
 		return;
 	}
 
-	UGameplayStatics::OpenLevel(this, GameInstance->GetMainMenuName());
+	UGameplayStatics::OpenLevel(this, GameInstance->GetMenuLevelName());
 }
