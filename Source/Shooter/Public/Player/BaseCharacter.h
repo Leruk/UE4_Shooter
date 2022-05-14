@@ -30,10 +30,10 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UHealthComponent* HealthComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UWeaponComponent* WeaponComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
@@ -54,6 +54,4 @@ private:
 
 	UFUNCTION()
 	void OnGroundLanded(const FHitResult& Hit);
-
-	void SetHealthText(float Health, float DeltaHealth);
 };
