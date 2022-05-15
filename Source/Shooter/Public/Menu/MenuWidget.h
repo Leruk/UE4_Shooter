@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/BaseWidget.h"
 #include "ShootCoreTypes.h"
 #include "MenuWidget.generated.h"
 
@@ -13,7 +13,7 @@ class UShootGameInstance;
 class ULevelItemWidget;
 
 UCLASS()
-class SHOOTER_API UMenuWidget : public UUserWidget
+class SHOOTER_API UMenuWidget : public UBaseWidget
 {
 	GENERATED_BODY()
 	

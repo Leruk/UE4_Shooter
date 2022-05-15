@@ -7,7 +7,7 @@
 #include "ShootCoreTypes.h"
 #include "GameHUD.generated.h"
 
-
+class UBaseWidget;
 
 UCLASS()
 class SHOOTER_API AGameHUD : public AHUD
@@ -32,9 +32,9 @@ protected:
 private:
 
 	UPROPERTY()
-	UUserWidget* CurrentWidget = nullptr;
+	UBaseWidget* CurrentWidget = nullptr;
 
 	UPROPERTY()
-	TMap<EMatchState, UUserWidget*> GameWidgets;
+	TMap<EMatchState, UBaseWidget*> GameWidgets;
 	void OnMatchStateChanged(EMatchState State);
 };

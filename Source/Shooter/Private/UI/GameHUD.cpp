@@ -2,16 +2,16 @@
 
 
 #include "UI/GameHUD.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/BaseWidget.h"
 #include "Shooter/ShooterGameModeBase.h"
 
 void AGameHUD::BeginPlay() 
 {
 	Super::BeginPlay();
 
-	GameWidgets.Add(EMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerWidgetClass));
-	GameWidgets.Add(EMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
-	GameWidgets.Add(EMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
+	GameWidgets.Add(EMatchState::InProgress, CreateWidget<UBaseWidget>(GetWorld(), PlayerWidgetClass));
+	GameWidgets.Add(EMatchState::Pause, CreateWidget<UBaseWidget>(GetWorld(), PauseWidgetClass));
+	GameWidgets.Add(EMatchState::GameOver, CreateWidget<UBaseWidget>(GetWorld(), GameOverWidgetClass));
 
 	for (auto GameWidgetPair : GameWidgets)
 	{
@@ -48,6 +48,7 @@ void AGameHUD::OnMatchStateChanged(EMatchState State)
 	if (CurrentWidget)
 	{
 		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+		CurrentWidget->Show();
 	}
 
 	UE_LOG(LogTemp, Display, TEXT("Match state changed: %s"), *UEnum::GetValueAsString(State));
