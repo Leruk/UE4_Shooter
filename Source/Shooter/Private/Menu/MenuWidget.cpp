@@ -76,7 +76,14 @@ void UMenuWidget::OnLevelSelected(const FLevelData& Data)
 
 void UMenuWidget::OnStartGame()
 {
-    const auto GameInstance = GetShootGameInstance();
+    PlayAnimation(HideAnimation);
+}
+
+void UMenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)
+{
+    if (Animation != HideAnimation) return;
+
+       const auto GameInstance = GetShootGameInstance();
     if (!GameInstance) return;
 
     UGameplayStatics::OpenLevel(this, GameInstance->GetStartupLevel().LevelName);
