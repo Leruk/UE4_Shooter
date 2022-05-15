@@ -9,12 +9,14 @@
 #include "Components/HealthComponent.h"
 #include "PlayerHUDWidget.generated.h"
 
+class UProgressBar;
+
 UCLASS()
 class SHOOTER_API UPlayerHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-protected:
+public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() const;
@@ -22,8 +24,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	bool GetWeaponUIData(FWeaponUIData &UIData) const;
 
-	UFUNCTION(BlueprintCallable)
-	FString GetAmmoData() const;
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
 	UFUNCTION(BlueprintCallable)
 	bool IsPlayerAlive() const;
@@ -34,12 +36,31 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
 	void OnTakeDamage();
 
+	UFUNCTION(BlueprintCallable)
+	int32 GetKillsNum() const;
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FString FormatBullets(int32 BulletsNum) const;
+
+protected:
+
+	UPROPERTY(meta = (BindWidget))
+		UProgressBar* HealthProgressBar;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+		float PercentColorThreshold = 0.3f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+		FLinearColor GoodColor = FLinearColor::Green;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+		FLinearColor BadColor = FLinearColor::Red;
+
 	virtual void NativeOnInitialized() override;
 
 private:
 
-	FString PrintAmmo(FAmmoData& AmmoData) const;
-
 	void OnHealthChanged(float Health, float DeltaHealth);
 	void OnNewPawn(APawn* NewPawn);
+	void UpdateHealthBar();
 };

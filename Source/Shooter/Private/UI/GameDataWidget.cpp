@@ -24,11 +24,7 @@ int32 UGameDataWidget::GetRoundSecondsRemaining() const
 	return GameMode ? GameMode->GetRoundSecondsRemaining() : 0;
 }
 
-int32 UGameDataWidget::GetKillsNum() const
-{
-	const auto PlayerState = GetShootPlayerState();
-	return PlayerState ? PlayerState->GetKills() : 0;
-}
+
 
 int32 UGameDataWidget::GetDeathsNum() const
 {

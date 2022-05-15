@@ -13,7 +13,8 @@ class SHOOTER_API USpectatorWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	bool GetRespawnTime(int& CountDownTime) const;
-	
+	bool GetRespawnTime(int32& CountDownTime) const;
+
 };

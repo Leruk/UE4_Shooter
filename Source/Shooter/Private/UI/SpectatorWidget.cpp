@@ -5,7 +5,7 @@
 #include "Components/RespawnComponent.h"
 #include "ShootUtils.h"
 
-bool USpectatorWidget::GetRespawnTime(int& CountDownTime) const
+bool USpectatorWidget::GetRespawnTime(int32& CountDownTime) const
 {
     const auto RespawnComponent = Utils::GetPlayerComponent<URespawnComponent>(GetOwningPlayer());
     if (!RespawnComponent || !RespawnComponent->IsRespawnInProgress()) return false;

@@ -7,6 +7,8 @@
 #include "Components/WeaponComponent.h"
 #include "Player/BaseCharacter.h"
 #include "ShootUtils.h"
+#include "Components/ProgressBar.h"
+#include "Player/ShootPlayerState.h"
 
 void UPlayerHUDWidget::NativeOnInitialized() {
 
@@ -25,6 +27,8 @@ void UPlayerHUDWidget::OnNewPawn(APawn* NewPawn)
 	{
 		HealthComponent->OnChangedHealth.AddUObject(this, &UPlayerHUDWidget::OnHealthChanged);
 	}
+
+	UpdateHealthBar();
 }
 
 
@@ -34,6 +38,7 @@ void UPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta) {
 		OnTakeDamage();
 	}
 
+	UpdateHealthBar();
 }
 
 float UPlayerHUDWidget::GetHealthPercent() const {
@@ -55,16 +60,12 @@ bool UPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const {
 	return WeaponComponent->GetWeaponUIData(UIData);
 }
 
-FString UPlayerHUDWidget::GetAmmoData() const {
-
+bool UPlayerHUDWidget::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
+{
 	const auto WeaponComponent = Utils::GetPlayerComponent<UWeaponComponent>(GetOwningPlayerPawn());
+	if (!WeaponComponent) return false;
 
-	if (!WeaponComponent) return "";
-
-	FAmmoData CurrentWeapon;
-	WeaponComponent->GetWeaponAmmoData(CurrentWeapon);
-
-	return PrintAmmo(CurrentWeapon);
+	return WeaponComponent->GetWeaponAmmoData(AmmoData);
 }
 
 bool UPlayerHUDWidget::IsPlayerAlive() const
@@ -81,9 +82,35 @@ bool UPlayerHUDWidget::IsPlayerSpectating() const
 	return Controller && Controller->GetStateName() == NAME_Spectating;
 }
 
-FString UPlayerHUDWidget::PrintAmmo(FAmmoData& AmmoData) const {
-	FString StringAmmo;
-	StringAmmo = FString::FromInt(AmmoData.Bullets) + " / ";
-	StringAmmo += AmmoData.Infinite ? TEXT("∞") : FString::FromInt(AmmoData.Clips);
-	return StringAmmo;
+int32 UPlayerHUDWidget::GetKillsNum() const
+{
+	const auto Controller = GetOwningPlayer();
+	if (!Controller) return 0;
+
+	const auto PlayerState = Cast<AShootPlayerState>(Controller->PlayerState);
+	return PlayerState ? PlayerState->GetKills() : 0;
+}
+
+void UPlayerHUDWidget::UpdateHealthBar()
+{
+	if (HealthProgressBar)
+	{
+		HealthProgressBar->SetFillColorAndOpacity(GetHealthPercent() > PercentColorThreshold ? GoodColor : BadColor);
+	}
+}
+
+FString UPlayerHUDWidget::FormatBullets(int32 BulletsNum) const
+{
+	const int32 MaxLen = 3;
+	const TCHAR PrefixSymbol = '0';
+
+	auto BulletStr = FString::FromInt(BulletsNum);
+	const auto SymbolsNumToAdd = MaxLen - BulletStr.Len();
+
+	if (SymbolsNumToAdd > 0)
+	{
+		BulletStr = FString::ChrN(SymbolsNumToAdd, PrefixSymbol).Append(BulletStr);
+	}
+
+	return BulletStr;
 }

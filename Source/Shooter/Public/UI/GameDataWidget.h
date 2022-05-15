@@ -26,9 +26,6 @@ public:
 	int32 GetTotalRoundsNum() const;
 
 	UFUNCTION(BlueprintCallable)
-	int32 GetKillsNum() const;
-
-	UFUNCTION(BlueprintCallable)
 	int32 GetDeathsNum() const;
 
 private:
