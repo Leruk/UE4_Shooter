@@ -7,6 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/HorizontalBox.h"
 #include "Menu/LevelItemWidget.h"
+#include "Sound/SoundCue.h"
 
 void UMenuWidget::NativeOnInitialized()
 {
@@ -77,6 +78,7 @@ void UMenuWidget::OnLevelSelected(const FLevelData& Data)
 void UMenuWidget::OnStartGame()
 {
     PlayAnimation(HideAnimation);
+    UGameplayStatics::PlaySound2D(GetWorld(), StartGameSound);
 }
 
 void UMenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)

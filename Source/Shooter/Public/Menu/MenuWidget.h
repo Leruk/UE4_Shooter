@@ -11,6 +11,7 @@ class UButton;
 class UHorizontalBox;
 class UShootGameInstance;
 class ULevelItemWidget;
+class USoundCue;
 
 UCLASS()
 class SHOOTER_API UMenuWidget : public UBaseWidget
@@ -32,6 +33,9 @@ protected:
 
     UPROPERTY(meta = (BindWidgetAnim), Transient)
         UWidgetAnimation* HideAnimation;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+        USoundCue* StartGameSound;
 
     virtual void NativeOnInitialized() override;
     virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* Animation) override;
