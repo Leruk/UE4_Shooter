@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/WeaponComponent.h"
 #include "GameFramework/Controller.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit) 
 	: Super(ObjInit.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -61,6 +63,8 @@ void ABaseCharacter::OnDeath() {
 
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetMesh()->SetSimulatePhysics(true);
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), DeathSound, GetActorLocation());
 }
 
 void ABaseCharacter::OnGroundLanded(const FHitResult& Hit) {

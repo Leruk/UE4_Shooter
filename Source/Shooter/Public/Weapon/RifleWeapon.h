@@ -9,6 +9,7 @@
 class UWeaponFXComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UAudioComponent;
 
 UCLASS()
 class SHOOTER_API ARifleWeapon : public ABaseWeapon
@@ -47,10 +48,14 @@ protected:
 
 private:
 
+	UPROPERTY()
 	UNiagaraComponent* MuzzleFXComponent;
 
-	void InitMuzzleFX();
-	void SetMuzzleFXVisibility(bool Visible);
+	UPROPERTY()
+	UAudioComponent* FireAudioComponent;
+
+	void InitFX();
+	void SetFXActive(bool isActive);
 
 	void SpawnFXTrace(const FVector& TraceStart, const FVector& TraceEnd);
 	AController* GetController() const;

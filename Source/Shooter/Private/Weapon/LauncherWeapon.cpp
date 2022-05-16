@@ -4,6 +4,8 @@
 #include "Weapon/LauncherWeapon.h"
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/Projectile.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 void ALauncherWeapon::StartFire() {
 	MakeShot();
@@ -11,7 +13,13 @@ void ALauncherWeapon::StartFire() {
 
 void ALauncherWeapon::MakeShot() {
 
-	if (!GetWorld() || IsAmmoEmpty()) return;
+	if (!GetWorld()) return;
+
+	if (IsAmmoEmpty())
+	{
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
+		return;
+	}
 
 	FVector TraceStart, TraceEnd;
 	if (!GetTraceData(TraceStart, TraceEnd)) return;
@@ -33,4 +41,6 @@ void ALauncherWeapon::MakeShot() {
 
 	DecreaseAmmo();
 	SpawnMuzzleFX();
+
+	UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, "MuzzleSocket");
 }

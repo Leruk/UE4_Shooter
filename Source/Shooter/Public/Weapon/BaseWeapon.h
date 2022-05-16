@@ -10,6 +10,7 @@
 class USkeletalMeshComponent;
 class UNiagaraSystem;
 class UNiagaraComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTER_API ABaseWeapon : public AActor
@@ -38,8 +39,6 @@ public:
 	bool IsAmmoFull() const;
 
 protected:
-	
-	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USkeletalMeshComponent* WeaponMesh;
@@ -55,6 +54,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "VFX")
 	UNiagaraSystem* MuzzleFX;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		USoundCue* FireSound;
+
+	virtual void BeginPlay() override;
 
 	virtual void MakeShot();
 	
