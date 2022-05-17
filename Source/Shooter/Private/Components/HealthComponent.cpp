@@ -10,6 +10,7 @@
 #include "Camera/CameraShakeBase.h"
 #include "Camera/PlayerCameraManager.h"
 #include <Shooter/ShooterGameModeBase.h>
+#include "Perception/AISense_Damage.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -34,11 +35,12 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 
 	OnChangedHealth.Broadcast(Health, -1.0f);
 
-
 	if (IsDead()) {
 		Killed(InstigatedBy);
 		Death.Broadcast();
 	}
+
+	ReportDamageEvent(Damage, InstigatedBy);
 
 	Player->GetWorldTimerManager().SetTimer(TimerHandle, this, &UHealthComponent::AutoHeal, AutoHealData.TimeRate, true, AutoHealData.FirstDelay);
 
@@ -83,4 +85,16 @@ void UHealthComponent::Killed(AController* KillerController)
 
 	GameMode->Killed(KillerController, VictimController);
 
+}
+
+void UHealthComponent::ReportDamageEvent(float Damage, AController* InstigatedBy)
+{
+	if (!InstigatedBy || !InstigatedBy->GetPawn() || !GetOwner()) return;
+
+	UAISense_Damage::ReportDamageEvent(GetWorld(),
+		GetOwner(),
+		InstigatedBy->GetPawn(),
+		Damage,
+		InstigatedBy->GetPawn()->GetActorLocation(),
+		GetOwner()->GetActorLocation());
 }
