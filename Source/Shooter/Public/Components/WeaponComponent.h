@@ -36,6 +36,8 @@ public:
 
 	bool NeedAmmo(TSubclassOf<ABaseWeapon> WeaponType);
 
+	void Zoom(bool Enabled);
+
 protected:
 
 	virtual void BeginPlay() override;

@@ -21,6 +21,8 @@ public:
 
 	ARifleWeapon();
 
+	virtual void Zoom(bool Enabled) override;
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -47,6 +49,9 @@ protected:
 
 	void MakeDamage(FHitResult HitResult);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float FOVZoomAngle = 50.0f;
+
 private:
 
 	UPROPERTY()
@@ -60,4 +65,6 @@ private:
 
 	void SpawnFXTrace(const FVector& TraceStart, const FVector& TraceEnd);
 	AController* GetController() const;
+
+	float DefaultCameraFOV = 90.0f;
 };

@@ -38,6 +38,8 @@ public:
 
 	bool IsAmmoFull() const;
 
+	virtual void Zoom(bool Enabled) {};
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")

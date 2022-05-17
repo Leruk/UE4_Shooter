@@ -10,8 +10,6 @@
 UWeaponComponent::UWeaponComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
-
 }
 
 
@@ -76,6 +74,7 @@ void UWeaponComponent::EquipWeapon(int32 WeaponIndex) {
 	if (CurrentWeapon) {
 		AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponArmorySocketName);
 		CurrentWeapon->StopFire();
+		CurrentWeapon->Zoom(false);
 	}
 
 	CurrentWeapon = Weapons[WeaponIndex];
@@ -233,4 +232,11 @@ bool UWeaponComponent::NeedAmmo(TSubclassOf<ABaseWeapon> WeaponType)
 		}
 	}
 	return false;
+}
+
+void UWeaponComponent::Zoom(bool Enabled)
+{
+	if (!CurrentWeapon) return;
+
+	CurrentWeapon->Zoom(Enabled);
 }
