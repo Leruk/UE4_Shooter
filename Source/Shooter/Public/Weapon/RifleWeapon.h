@@ -10,6 +10,7 @@ class UWeaponFXComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
 class UAudioComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTER_API ARifleWeapon : public ABaseWeapon
@@ -22,16 +23,16 @@ public:
 
 protected:
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UWeaponFXComponent* WeaponFXComponent;
+
+	UPROPERTY(EditAnywhere, Category = "Components")
+	UNiagaraSystem* RifleTraceFXComponent;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Fire")
 	float BulletSpread = 1.5f;
 
 	FTimerHandle TimerHandle;
-
-	UPROPERTY(VisibleAnywhere, Category = "VFX")
-	UWeaponFXComponent* WeaponFXComponent;
-
-	UPROPERTY(EditAnywhere, Category = "VFX")
-	UNiagaraSystem* RifleTraceFXComponent;
 
 	UPROPERTY(EditAnywhere, Category = "VFX")
 	FString TraceTargetName = "TraceTarget";

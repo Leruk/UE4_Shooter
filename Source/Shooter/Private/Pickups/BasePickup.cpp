@@ -3,6 +3,8 @@
 
 #include "Pickups/BasePickup.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 ABasePickup::ABasePickup()
 {
@@ -36,6 +38,8 @@ void ABasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
 	APawn* PlayerPawn = Cast<APawn>(OtherActor);
 	if (GivePickupTo(PlayerPawn)) {
 		PickupWasTaken();
+
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), PickupTakeSound, PlayerPawn->GetActorLocation());
 	}
 }
 

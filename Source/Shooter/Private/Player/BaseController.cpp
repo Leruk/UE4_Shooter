@@ -5,6 +5,7 @@
 #include "Components/RespawnComponent.h"
 #include "GameFramework/GameModeBase.h"
 #include "Shooter/ShooterGameModeBase.h"
+#include "ShootGameInstance.h"
 
 ABaseController::ABaseController()
 {
@@ -52,6 +53,7 @@ void ABaseController::SetupInputComponent()
 	if (!InputComponent) return;
 
 	InputComponent->BindAction("PauseGame", IE_Pressed, this, &ABaseController::OnPauseGame);
+	InputComponent->BindAction("Mute", IE_Pressed, this, &ABaseController::OnMuteSound);
 }
 
 void ABaseController::OnPauseGame()
@@ -59,4 +61,14 @@ void ABaseController::OnPauseGame()
 	if (!GetWorld() || !GetWorld()->GetAuthGameMode()) return;
 
 	GetWorld()->GetAuthGameMode()->SetPause(this);
+}
+
+void ABaseController::OnMuteSound()
+{
+	if (!GetWorld()) return;
+
+	const auto ShootInstance = Cast<UShootGameInstance>(GetWorld()->GetGameInstance());
+	if (!ShootInstance) return;
+
+	ShootInstance->ToggleVolume();
 }

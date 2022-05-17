@@ -7,6 +7,7 @@
 #include "BasePickup.generated.h"
 
 class USphereComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTER_API ABasePickup : public AActor
@@ -22,6 +23,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	USphereComponent* CollisionComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	USoundCue* PickupTakeSound;
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

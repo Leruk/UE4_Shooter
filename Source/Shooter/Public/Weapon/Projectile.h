@@ -22,14 +22,17 @@ public:
     void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }
 
 protected:
-    UPROPERTY(VisibleAnywhere, Category = "Weapon")
+    UPROPERTY(VisibleAnywhere, Category = "Components")
         USphereComponent* CollisionComponent;
 
-    UPROPERTY(VisibleAnywhere, Category = "Weapon")
+    UPROPERTY(VisibleAnywhere, Category = "Components")
         UProjectileMovementComponent* MovementComponent;
 
-    UPROPERTY(VisibleAnywhere, Category = "Weapon")
+    UPROPERTY(VisibleAnywhere, Category = "Components")
         UStaticMeshComponent* ProjectileMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+        UWeaponFXComponent* WeaponFXComponent;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
         float DamageRadius = 200.0f;
@@ -42,9 +45,6 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
         float LifeSeconds = 5.0f;
-
-    UPROPERTY(VisibleAnywhere, Category = "VFX")
-        UWeaponFXComponent* WeaponFXComponent;
 
     virtual void BeginPlay() override;
 

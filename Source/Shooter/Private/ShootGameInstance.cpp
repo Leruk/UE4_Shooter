@@ -2,4 +2,9 @@
 
 
 #include "ShootGameInstance.h"
+#include "Sound/SoundFuncLib.h"
 
+void UShootGameInstance::ToggleVolume()
+{
+	USoundFuncLib::ToggleSoundClassVolume(MasterSoundClass);
+}

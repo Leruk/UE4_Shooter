@@ -77,6 +77,9 @@ struct FAutoHeal {
 
 //VFX
 
+class UNiagaraSystem;
+class USoundCue;
+
 USTRUCT(BlueprintType)
 struct FDecalData {
 
@@ -107,6 +110,8 @@ struct FImpactData {
 	UPROPERTY(EditDefaultsOnly, Category = "VFX")
 		UNiagaraSystem* Effect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+		USoundCue* Sound;
 };
 
 
