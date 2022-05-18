@@ -10,6 +10,7 @@
 #include "ShootUtils.h"
 #include "Components/RespawnComponent.h"
 #include "EngineUtils.h"
+#include "Components/WeaponComponent.h"
 
 constexpr static int32 MinRoundTimeForRespawn = 10;
 
@@ -230,6 +231,7 @@ bool AShooterGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpaus
 
 	if (PauseSet)
 	{
+		StopAllFire();
 		SetMatchState(EMatchState::Pause);
 	}
 
@@ -248,4 +250,16 @@ bool AShooterGameModeBase::ClearPause()
 
 
 	return PauseCancel;
+}
+
+void AShooterGameModeBase::StopAllFire()
+{
+	for (auto Pawn : TActorRange<APawn>(GetWorld()))
+	{
+		const auto WeaponComponent = Utils::GetPlayerComponent<UWeaponComponent>(Pawn);
+		if (!WeaponComponent) continue;
+
+		WeaponComponent->StopFire();
+		WeaponComponent->Zoom(false);
+	}
 }

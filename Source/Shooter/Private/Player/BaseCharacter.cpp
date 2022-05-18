@@ -76,3 +76,17 @@ void ABaseCharacter::OnGroundLanded(const FHitResult& Hit) {
 	float Damage = FMath::GetMappedRangeValueClamped(LandedVelocity, LandedDamage, -FallVelocity);
 	TakeDamage(Damage, FDamageEvent{}, Controller, this);
 }
+
+void ABaseCharacter::TurnOff()
+{
+	WeaponComponent->StopFire();
+	WeaponComponent->Zoom(false);
+	Super::TurnOff();
+}
+
+void ABaseCharacter::Reset()
+{
+	WeaponComponent->StopFire();
+	WeaponComponent->Zoom(false);
+	Super::Reset();
+}

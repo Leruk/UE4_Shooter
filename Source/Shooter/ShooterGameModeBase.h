@@ -70,4 +70,6 @@ private:
 	void GameOver();
 
 	void SetMatchState(EMatchState State);
+
+	void StopAllFire();
 };

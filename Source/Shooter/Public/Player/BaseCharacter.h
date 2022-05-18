@@ -27,6 +27,9 @@ public:
 
 	void SetPlayerColor(const FLinearColor& Color);
 
+	virtual void TurnOff() override;
+	virtual void Reset() override;
+
 protected:
 
 	virtual void BeginPlay() override;
