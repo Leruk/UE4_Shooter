@@ -19,6 +19,8 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit)
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 
 	OnTakeAnyDamage.AddDynamic(HealthComp, &UHealthComponent::OnTakeAnyDamage);
+	OnTakePointDamage.AddDynamic(HealthComp, &UHealthComponent::OnTakePointDamage);
+	OnTakeRadialDamage.AddDynamic(HealthComp, &UHealthComponent::OnTakeRadialDamage);
 	LandedDelegate.AddDynamic(this, &ABaseCharacter::OnGroundLanded);
 }
 

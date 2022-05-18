@@ -2,7 +2,7 @@
 
 #include "Components/HealthComponent.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/Actor.h"
 #include "Player/BaseCharacter.h"
@@ -11,6 +11,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include <Shooter/ShooterGameModeBase.h>
 #include "Perception/AISense_Damage.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 
 UHealthComponent::UHealthComponent()
 {
@@ -27,8 +28,24 @@ void UHealthComponent::BeginPlay()
 	Player = Cast<ABaseCharacter>(GetOwner());
 }
 
-void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
-	
+void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) 
+{
+	ApplyDamage(Damage, InstigatedBy);
+}
+
+void UHealthComponent::OnTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
+{
+	const auto FinalDamage = Damage * GetPointDamageModifier(DamagedActor, BoneName);
+	ApplyDamage(FinalDamage, InstigatedBy);
+}
+
+void UHealthComponent::OnTakeRadialDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, FVector Origin, FHitResult HitInfo, AController* InstigatedBy, AActor* DamageCauser)
+{
+	ApplyDamage(Damage, InstigatedBy);
+}
+
+void UHealthComponent::ApplyDamage(float Damage, AController* InstigatedBy)
+{
 	if (Damage <= 0.0f || IsDead() || !GetWorld()) return;
 
 	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
@@ -45,6 +62,17 @@ void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const
 	Player->GetWorldTimerManager().SetTimer(TimerHandle, this, &UHealthComponent::AutoHeal, AutoHealData.TimeRate, true, AutoHealData.FirstDelay);
 
 	PlayCameraShake();
+}
+
+float UHealthComponent::GetPointDamageModifier(AActor* DamagedActor, const FName& BoneName)
+{
+	const auto Character = Cast<ACharacter>(DamagedActor);
+	if(!Character || !Character->GetMesh() || !Character->GetMesh()->GetBodyInstance(BoneName)) return 1.0f;
+
+	const auto PhysMaterial = Character->GetMesh()->GetBodyInstance(BoneName)->GetSimplePhysicalMaterial();
+	if (!PhysMaterial || !DamageModifiers.Contains(PhysMaterial)) return 1.0f;
+
+	return DamageModifiers[PhysMaterial];
 }
 
 void UHealthComponent::AutoHeal() {

@@ -86,7 +86,9 @@ void ARifleWeapon::MakeDamage(FHitResult HitResult) {
 
 	if (!DamagedActor) return;
 
-	DamagedActor->TakeDamage(10.0f, FDamageEvent{}, GetController(), this);
+	FPointDamageEvent PointDamageEvent;
+	PointDamageEvent.HitInfo = HitResult;
+	DamagedActor->TakeDamage(10.0f, PointDamageEvent, GetController(), this);
 
 }
 
