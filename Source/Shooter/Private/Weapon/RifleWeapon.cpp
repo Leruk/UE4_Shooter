@@ -6,11 +6,13 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 #include "Components/WeaponFXComponent.h"
+#include "Components/WeaponComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
+#include "ShootUtils.h"
 
 ARifleWeapon::ARifleWeapon() {
 	WeaponFXComponent = CreateDefaultSubobject<UWeaponFXComponent>("WeaponFXComponent");
@@ -29,7 +31,9 @@ void ARifleWeapon::StopFire() {
 
 void ARifleWeapon::MakeShot() {
 
-	if (!GetWorld() || IsAmmoEmpty()) {
+	UWeaponComponent* WeaponComponent = Utils::GetPlayerComponent<UWeaponComponent>(GetOwner());
+
+	if (!GetWorld() || IsAmmoEmpty() || !WeaponComponent || !WeaponComponent->CanFire()) {
 		StopFire();
 		return;
 	}

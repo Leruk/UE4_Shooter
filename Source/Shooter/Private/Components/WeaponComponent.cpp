@@ -3,6 +3,7 @@
 #include "Components/WeaponComponent.h"
 #include "Weapon/BaseWeapon.h"
 #include "Player/BaseCharacter.h"
+#include "Player/PlayerCharacter.h"
 #include "Animation/EquipAnimNotify.h"
 #include "Animation/ReloadAnimNotify.h"
 #include "Animation/AnimUtilities.h"
@@ -146,7 +147,8 @@ void UWeaponComponent::ReloadFinished(USkeletalMeshComponent* SkeletalMeshCompon
 
 bool UWeaponComponent::CanFire() const
 {
-	return CurrentWeapon && !EquipInProgress && !ReloadInProgress;
+	APlayerCharacter* Character = Cast<APlayerCharacter>(GetOwner());
+	return CurrentWeapon && !EquipInProgress && !ReloadInProgress && !Character->IsRun();
 }
 
 bool UWeaponComponent::CanEquip() const

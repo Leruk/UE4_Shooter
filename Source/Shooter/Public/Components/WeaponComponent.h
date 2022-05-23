@@ -38,6 +38,8 @@ public:
 
 	void Zoom(bool Enabled);
 
+	bool CanFire() const;
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -70,7 +72,7 @@ protected:
 
 	int32 CurrentWeaponIndex = 0;
 
-	bool CanFire() const;
+
 	bool CanEquip() const;
 
 	void EquipFinished(USkeletalMeshComponent* SkeletalMesh);

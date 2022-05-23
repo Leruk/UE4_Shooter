@@ -3,6 +3,7 @@
 
 #include "Weapon/BaseWeapon.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/WeaponComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Player/BaseCharacter.h"
 #include "GameFramework/Character.h"
